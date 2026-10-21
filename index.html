@@ -537,7 +537,7 @@
         </section>
 
         <!-- 6. Framework structure -->
-        <section class="slide deep" data-section="Framework and methodology" data-time="1:40" aria-label="Three learner-facing forms and one institutional condition">
+        <section class="slide deep" data-section="Framework and methodology" data-time="1:20" aria-label="Three learner-facing forms and one institutional condition">
           <p class="eyebrow">Theoretical framework · Structure</p>
           <h2>Three learner-facing forms rest on one institutional condition</h2>
           <p class="hint"><span class="tap">Click a form</span></p>
@@ -706,7 +706,7 @@
         </section>
 
         <!-- 12. Reflections -->
-        <section class="slide dark" data-section="Reflections and next steps" data-time="1:30" aria-label="Reflections and next steps">
+        <section class="slide dark" data-section="Reflections and next steps" data-time="1:00" aria-label="Reflections and next steps">
           <p class="eyebrow">Reflections and next steps</p>
           <h2>What the process has taught me so far</h2>
           <div class="grow"></div>
@@ -894,7 +894,7 @@
         var notes = window.SPEAKER_NOTES && window.SPEAKER_NOTES[current];
         $('notesTitle').textContent = (current + 1) + '. ' + titleOf(sl);
         var t = sl.getAttribute('data-time');
-        $('notesMeta').textContent = (sl.getAttribute('data-section') || '') + (t && t !== '0:00' ? ' · target ' + t : '') + (maxStep(sl) ? ' · ' + maxStep(sl) + ' builds' : '');
+        $('notesMeta').textContent = (sl.getAttribute('data-section') || '') + (t && t !== '0:00' ? ' · target ' + t : '') + (maxStep(sl) ? ' · ' + maxStep(sl) + (maxStep(sl) === 1 ? ' build' : ' builds') : '');
         $('notesBody').innerHTML = notes ? notes : (window.SPEAKER_NOTES ? '<p>No notes for this slide.</p>' : '<p>Speaker notes are not part of the published deck. Open your local copy to see them, or use the printable notes page.</p>');
         Array.prototype.forEach.call($('overviewList').querySelectorAll('button'), function (b, j) { b.setAttribute('aria-current', j === current ? 'true' : 'false'); });
         history.replaceState(null, '', '#' + (current + 1));
