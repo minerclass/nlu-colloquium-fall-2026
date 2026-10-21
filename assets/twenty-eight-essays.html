@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Twenty-eight essays</title>
+<!-- 18-second silent scene for the Fall 2026 Doctoral Colloquium deck.
+     Open with #seconds (for example #9) to preview a moment.
+     The teacher, essays, and principal's note are illustrations, not study data. -->
+<style>
+  html,body{margin:0;background:#101920;}
+  svg{display:block;width:1920px;height:1080px;}
+  text{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;}
+  .mono{font-family:"SF Mono",Menlo,"DejaVu Sans Mono",monospace;}
+  .serif{font-family:Georgia,"Times New Roman",serif;}
+</style>
+</head>
+<body>
+<svg id="s" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="glowWarm" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f0b48f" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#f0b48f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowTeal" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#2f6970" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#2f6970" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ===== ROOM (all three shots) ===== -->
+  <g id="room">
+    <rect width="1920" height="1080" fill="#1f2c37"/>
+    <!-- whiteboard -->
+    <rect x="96" y="150" width="420" height="250" rx="6" fill="#e8e0d2"/>
+    <rect x="96" y="400" width="420" height="12" fill="#34434e"/>
+    <text class="mono" x="124" y="196" font-size="16" letter-spacing="2" fill="#5a6670">UNIT 4 · ESSENTIAL QUESTION</text>
+    <text class="serif" x="124" y="248" font-size="30" font-style="italic" fill="#17232d">Was the New Deal</text>
+    <text class="serif" x="124" y="288" font-size="30" font-style="italic" fill="#17232d">a success? For whom?</text>
+    <path d="M124 330 Q170 316 220 332 T320 330" fill="none" stroke="#91462f" stroke-width="4" stroke-linecap="round"/>
+    <!-- clock -->
+    <circle cx="760" cy="230" r="56" fill="#e8e0d2" stroke="#34434e" stroke-width="6"/>
+    <line id="hourHand" x1="760" y1="230" x2="760" y2="200" stroke="#17232d" stroke-width="6" stroke-linecap="round"/>
+    <line id="minHand" x1="760" y1="230" x2="760" y2="186" stroke="#17232d" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="760" cy="230" r="5" fill="#91462f"/>
+    <circle id="glowW" cx="620" cy="560" r="320" fill="url(#glowWarm)"/>
+    <!-- teacher -->
+    <g id="teacher">
+      <path d="M528 640 L528 590 Q528 552 568 548 L642 548 Q682 552 682 590 L682 640 Z" fill="#91462f"/>
+      <path d="M590 548 L605 570 L620 548 Z" fill="#f3efe6"/>
+      <rect x="591" y="520" width="28" height="32" fill="#a8704f"/>
+      <circle cx="605" cy="472" r="60" fill="#c48a66"/>
+      <circle cx="605" cy="402" r="26" fill="#3a2414"/>
+      <path d="M545 476 Q543 412 605 410 Q667 412 665 476 Q652 440 610 438 Q572 440 556 462 Q550 470 545 476 Z" fill="#3a2414"/>
+      <circle cx="545" cy="484" r="9" fill="#a8704f"/><circle cx="665" cy="484" r="9" fill="#a8704f"/>
+      <circle cx="665" cy="500" r="5" fill="#f5c86a"/>
+      <circle cx="584" cy="482" r="5" fill="#17232d"/><circle cx="626" cy="482" r="5" fill="#17232d"/>
+      <path id="tBrowL" d="M570 462 L596 464" stroke="#3a2414" stroke-width="5" stroke-linecap="round"/>
+      <path id="tBrowR" d="M640 462 L614 464" stroke="#3a2414" stroke-width="5" stroke-linecap="round"/>
+      <path id="tMouthFlat" d="M592 512 L618 512" stroke="#3a2414" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+      <path id="tMouthSmile" d="M588 506 Q605 524 622 506" stroke="#3a2414" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0"/>
+      <rect x="586" y="556" width="6" height="70" fill="#2f6970"/>
+      <rect x="578" y="622" width="24" height="32" rx="3" fill="#f3efe6"/>
+    </g>
+    <rect x="498" y="612" width="214" height="140" rx="8" fill="#34434e" stroke="#4a5a66" stroke-width="3"/>
+    <circle cx="605" cy="682" r="8" fill="#4a5a66"/>
+    <rect x="262" y="750" width="730" height="24" fill="#2e3c48"/>
+    <rect x="288" y="774" width="678" height="306" fill="#24313c"/>
+    <g id="stack">
+      <rect x="784" y="726" width="132" height="10" fill="#e8e0d2"/>
+      <rect x="788" y="716" width="128" height="10" fill="#f3efe6"/>
+      <rect x="782" y="706" width="132" height="10" fill="#e8e0d2"/>
+      <rect x="790" y="696" width="124" height="10" fill="#f3efe6"/>
+      <rect x="806" y="668" width="112" height="40" fill="#f5c86a" transform="rotate(-6 862 688)"/>
+      <text x="862" y="694" font-size="16" font-weight="800" text-anchor="middle" fill="#17232d" transform="rotate(-6 862 688)">28 ESSAYS</text>
+    </g>
+  </g>
+
+  <!-- ===== PANEL A: the essays ===== -->
+  <g id="panelA">
+    <rect x="1016" y="136" width="818" height="664" rx="14" fill="#2a3742"/>
+    <rect x="1030" y="150" width="790" height="636" rx="6" fill="#f3efe6"/>
+    <rect x="1030" y="150" width="790" height="46" fill="#e3dccd"/>
+    <text class="mono" x="1052" y="180" font-size="17" letter-spacing="1.5" fill="#5a6670">UNIT 4 ESSAYS · PERIOD 3</text>
+    <text id="countA" class="mono" x="1798" y="180" font-size="17" letter-spacing="1.5" text-anchor="end" fill="#91462f">0 SUBMITTED</text>
+    <g id="thumbs"></g>
+  </g>
+
+  <!-- ===== PANEL B: the choice, then the redesign ===== -->
+  <g id="panelB" opacity="0">
+    <rect x="1016" y="136" width="818" height="664" rx="14" fill="#2a3742"/>
+    <rect x="1030" y="150" width="790" height="636" rx="6" fill="#f3efe6"/>
+    <rect x="1030" y="150" width="790" height="46" fill="#e3dccd"/>
+    <text id="bHead" class="mono" x="1052" y="180" font-size="17" letter-spacing="1.5" fill="#5a6670">NEXT STEP</text>
+    <g id="choice">
+      <text class="serif" x="1066" y="262" font-size="40" fill="#17232d">What now?</text>
+      <g id="optDetect">
+        <rect id="optDetectRect" x="1066" y="306" width="340" height="230" rx="14" fill="#e6eeec" stroke="#2f6970" stroke-width="3"/>
+        <circle cx="1124" cy="366" r="26" fill="none" stroke="#2f6970" stroke-width="5"/>
+        <path d="M1143 385 L1162 404" stroke="#2f6970" stroke-width="7" stroke-linecap="round"/>
+        <text x="1096" y="456" font-size="30" font-weight="700" fill="#1f5057">Run an AI</text>
+        <text x="1096" y="494" font-size="30" font-weight="700" fill="#1f5057">detector</text>
+      </g>
+      <g id="optRedesign">
+        <rect id="optRedesignRect" x="1444" y="306" width="340" height="230" rx="14" fill="#91462f"/>
+        <rect x="1494" y="346" width="40" height="40" rx="6" fill="none" stroke="#fffdf8" stroke-width="5"/>
+        <path d="M1502 366 L1512 377 L1528 356" fill="none" stroke="#fffdf8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="1474" y="456" font-size="30" font-weight="700" fill="#fffdf8">Redesign</text>
+        <text x="1474" y="494" font-size="30" font-weight="700" fill="#fffdf8">the task</text>
+      </g>
+      <text class="mono" x="1066" y="600" font-size="17" letter-spacing="2" fill="#5a6670">ONE ASKS WHO WROTE IT. ONE ASKS WHO LEARNED.</text>
+    </g>
+    <g id="plan" opacity="0">
+      <text class="serif" x="1066" y="262" font-size="40" fill="#17232d">Unit 4, redesigned</text>
+      <g id="planRows"></g>
+    </g>
+    <path id="cursor" d="M0 0 L0 36 L10 27 L17 42 L23 39 L16 25 L29 25 Z" fill="#fffdf8" stroke="#17232d" stroke-width="2.5" opacity="0"/>
+  </g>
+
+  <!-- ===== PANEL C: the system ===== -->
+  <g id="panelC" opacity="0">
+    <rect x="1016" y="136" width="818" height="664" rx="14" fill="#2a3742"/>
+    <rect x="1030" y="150" width="790" height="636" rx="6" fill="#f3efe6"/>
+    <rect x="1030" y="150" width="790" height="46" fill="#e3dccd"/>
+    <text class="mono" x="1052" y="180" font-size="17" letter-spacing="1.5" fill="#5a6670">PACING GUIDE · SEMESTER 1</text>
+    <g id="weeks"></g>
+    <rect x="1066" y="380" width="0" height="56" rx="8" fill="#2f6970" id="unitBar"/>
+    <text id="unitLabel" x="1084" y="417" font-size="22" font-weight="700" fill="#fffdf8">UNIT 4</text>
+    <g id="lock">
+      <rect x="1500" y="388" width="34" height="28" rx="4" fill="#91462f"/>
+      <path id="shackle" d="M1505 388 L1505 376 Q1505 360 1517 360 Q1529 360 1529 376 L1529 388" fill="none" stroke="#91462f" stroke-width="5"/>
+    </g>
+    <text id="paceNote" class="mono" x="1066" y="484" font-size="18" letter-spacing="2" font-weight="700" fill="#91462f">UNIT 4 ENDS FRIDAY</text>
+    <g id="toast" opacity="0">
+      <rect x="1066" y="540" width="718" height="190" rx="14" fill="#17232d"/>
+      <text class="mono" x="1098" y="584" font-size="16" letter-spacing="2.5" font-weight="700" fill="#f0b48f">FROM: PRINCIPAL</text>
+      <text id="toast1" class="serif" x="1098" y="640" font-size="34" font-style="italic" fill="#f3efe6"></text>
+      <text id="toast2" class="serif" x="1098" y="690" font-size="34" font-style="italic" fill="#f3efe6"></text>
+    </g>
+  </g>
+
+  <!-- ===== END CARD ===== -->
+  <g id="endCard" opacity="0">
+    <rect width="1920" height="1080" fill="#17232d"/>
+    <text class="mono" x="200" y="380" font-size="24" letter-spacing="5" font-weight="700" fill="#f0b48f">PEDAGOGICAL FRICTION · THE SYSTEM BENEATH THE CLASSROOM</text>
+    <text x="194" y="500" font-size="96" font-weight="800" letter-spacing="-2" fill="#f3efe6">Detection asks who wrote it.</text>
+    <text id="endLine" class="serif" x="198" y="614" font-size="80" font-style="italic" fill="#d27a5c">Design asks who learned.</text>
+    <rect id="endRule" x="200" y="668" width="0" height="6" fill="#d27a5c"/>
+    <text class="mono" x="200" y="740" font-size="22" letter-spacing="2" fill="#a9b3ba">MICAH J. MINER · FALL 2026 DOCTORAL COLLOQUIUM · NATIONAL LOUIS UNIVERSITY</text>
+  </g>
+
+  <rect x="0" y="0" width="1920" height="60" fill="#101920"/>
+  <rect x="0" y="1020" width="1920" height="60" fill="#101920"/>
+  <g id="tagBox">
+    <rect x="88" y="90" width="530" height="44" fill="#101920"/>
+    <text id="tag" class="mono" x="108" y="121" font-size="24" letter-spacing="3" font-weight="700" fill="#7fc4c9">MONDAY · 3:40 PM · ROOM 214</text>
+  </g>
+  <rect id="fade" width="1920" height="1080" fill="#101920" opacity="1"/>
+</svg>
+
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  var $ = function(id){ return document.getElementById(id); };
+  function el(tag, attrs, parent, text){
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    parent.appendChild(e); return e;
+  }
+  var clamp = function(x,a,b){ return Math.max(a, Math.min(b, x)); };
+  var prog = function(t,a,b){ return clamp((t-a)/(b-a),0,1); };
+  var ease = function(x){ return x<.5 ? 2*x*x : 1-Math.pow(-2*x+2,2)/2; };
+  var lerp = function(a,b,x){ return a+(b-a)*x; };
+
+  // ---- essay thumbnails: twelve shown, the same opening on almost every one ----
+  var thumbs = $('thumbs'), cards = [], marks = [];
+  for (var r = 0; r < 3; r++) for (var c = 0; c < 4; c++) {
+    var k = r*4 + c, x = 1060 + c*190, y = 222 + r*184, g = el('g',{opacity:0},thumbs);
+    el('rect',{x:x,y:y,width:172,height:166,rx:8,fill:'#fffdf8',stroke:'#c9c1b1','stroke-width':2},g);
+    el('text',{x:x+14,y:y+28,'font-size':13,'class':'mono',fill:'#5a6670'},g,'STUDENT ' + (k+1));
+    var same = k !== 5;
+    var hl = el('rect',{x:x+10,y:y+42,width:152,height:38,rx:4,fill:'#f5c86a',opacity:0},g);
+    el('text',{x:x+14,y:y+58,'font-size':13,'class':'serif',fill:'#17232d'},g, same ? 'Throughout history,' : 'My great-grandpa');
+    el('text',{x:x+14,y:y+75,'font-size':13,'class':'serif',fill:'#17232d'},g, same ? 'the New Deal was…' : 'built a dam in 1936…');
+    [96,140,120,150,84].forEach(function(w,i){ el('rect',{x:x+14,y:y+94+i*13,width:w,height:6,rx:3,fill:'#d8d0c0'},g); });
+    cards.push(g); if (same) marks.push(hl);
+  }
+
+  // ---- redesigned plan rows ----
+  var rows = [
+    ['Draft the argument in class', 'HEAD'],
+    ['Defend one claim in a three-minute conference', 'ROOM'],
+    ['Process memo: what changed your mind?', 'WORLD']
+  ];
+  var planRows = $('planRows'), ticks = [], rowEls = [];
+  rows.forEach(function(rw, i){
+    var y = 330 + i*120, g = el('g',{opacity:0},planRows);
+    el('rect',{x:1066,y:y,width:44,height:44,rx:6,fill:'#fffdf8',stroke:'#17232d','stroke-width':3},g);
+    ticks.push(el('path',{d:'M'+1075+' '+(y+23)+' L'+1086+' '+(y+35)+' L'+1103+' '+(y+10),fill:'none',stroke:'#91462f','stroke-width':5,'stroke-linecap':'round','stroke-linejoin':'round',opacity:0},g));
+    el('text',{x:1130,y:y+32,'font-size':27,fill:'#17232d'},g,rw[0]);
+    el('rect',{x:1130,y:y+48,width:rw[1].length*14+30,height:30,rx:15,fill:'#dbe7e5'},g);
+    el('text',{x:1145,y:y+69,'font-size':15,'font-weight':700,'letter-spacing':2,'class':'mono',fill:'#1f5057'},g,rw[1]);
+    rowEls.push(g);
+  });
+
+  // ---- pacing weeks ----
+  var weeks = $('weeks');
+  for (var w = 0; w < 6; w++) {
+    var wx = 1066 + w*120;
+    el('rect',{x:wx,y:240,width:110,height:110,rx:8,fill:'#fffdf8',stroke:'#c9c1b1','stroke-width':2},weeks);
+    el('text',{x:wx+55,y:286,'font-size':15,'text-anchor':'middle','class':'mono',fill:'#5a6670'},weeks,'WEEK');
+    el('text',{x:wx+55,y:326,'font-size':30,'text-anchor':'middle','font-weight':700,fill:'#17232d'},weeks,String(9 + w));
+  }
+
+  var toast1 = 'Take the extra week for conferences.', toast2 = 'Process over pace.';
+
+  // ---- timeline (seconds) ----
+  // A 0-5.6 the essays | B 5.6-11.2 the choice and the redesign | C 11.2-14.4 the system | end 14.4-18
+  window.render = function(t){
+    var sA = 1 - prog(t, 5.5, 5.8), sB = prog(t, 5.5, 5.8) * (1 - prog(t, 11.1, 11.4)), sC = prog(t, 11.1, 11.4);
+    $('panelA').setAttribute('opacity', sA.toFixed(3));
+    $('panelB').setAttribute('opacity', sB.toFixed(3));
+    $('panelC').setAttribute('opacity', sC.toFixed(3));
+    $('endCard').setAttribute('opacity', prog(t, 14.2, 14.6).toFixed(3));
+    $('tag').textContent = t < 11.2 ? 'MONDAY · 3:40 PM · ROOM 214' : 'TUESDAY · 7:50 AM';
+    $('tagBox').setAttribute('opacity', (1 - prog(t, 14.2, 14.5)).toFixed(3));
+    $('glowW').setAttribute('fill', t >= 11.2 ? 'url(#glowTeal)' : 'url(#glowWarm)');
+
+    // clock hands
+    var minute = t < 11.2 ? 40 + t*0.4 : 50;
+    var hour = t < 11.2 ? 3 + minute/60 : 7 + 50/60;
+    var ma = minute/60*2*Math.PI, ha = hour/12*2*Math.PI;
+    $('minHand').setAttribute('x2', (760 + 44*Math.sin(ma)).toFixed(1)); $('minHand').setAttribute('y2', (230 - 44*Math.cos(ma)).toFixed(1));
+    $('hourHand').setAttribute('x2', (760 + 30*Math.sin(ha)).toFixed(1)); $('hourHand').setAttribute('y2', (230 - 30*Math.cos(ha)).toFixed(1));
+
+    // A: essays arrive, the same opening gets highlighted
+    cards.forEach(function(g, i){ g.setAttribute('opacity', prog(t, 0.5 + i*0.16, 0.7 + i*0.16).toFixed(3)); });
+    var nSub = Math.round(28 * prog(t, 0.5, 2.5));
+    marks.forEach(function(m, i){ m.setAttribute('opacity', (0.85 * prog(t, 2.8 + i*0.12, 2.95 + i*0.12)).toFixed(3)); });
+    $('countA').textContent = t < 2.8 ? nSub + ' SUBMITTED' : '28 SUBMITTED · 26 OPEN THE SAME WAY';
+    var worried = t >= 3.4 && t < 8.6;
+    var happy = t >= 8.6;
+    $('tMouthFlat').setAttribute('opacity', happy ? 0 : 1);
+    $('tMouthSmile').setAttribute('opacity', happy ? 1 : 0);
+    $('tMouthFlat').setAttribute('d', worried ? 'M592 514 Q605 506 618 514' : 'M592 512 L618 512');
+    $('tBrowL').setAttribute('d', worried ? 'M570 456 L596 464' : (happy ? 'M570 458 L596 456' : 'M570 462 L596 464'));
+    $('tBrowR').setAttribute('d', worried ? 'M640 456 L614 464' : (happy ? 'M640 458 L614 456' : 'M640 462 L614 464'));
+
+    // B: hover the detector, choose the redesign
+    var c1 = ease(prog(t, 6.0, 6.8)), c2 = ease(prog(t, 7.6, 8.2));
+    var cx = lerp(lerp(1420, 1240, c1), 1620, c2), cy = lerp(lerp(700, 430, c1), 430, c2);
+    $('cursor').setAttribute('transform', 'translate(' + cx.toFixed(1) + ',' + cy.toFixed(1) + ')');
+    $('cursor').setAttribute('opacity', (prog(t, 5.8, 6.0) * (1 - prog(t, 8.6, 8.8))).toFixed(3));
+    $('optDetectRect').setAttribute('fill', t >= 6.8 && t < 7.6 ? '#cfe0dd' : '#e6eeec');
+    $('optRedesignRect').setAttribute('fill', t >= 8.25 && t < 8.45 ? '#6f3324' : '#91462f');
+    var toPlan = prog(t, 8.5, 8.8);
+    $('choice').setAttribute('opacity', (1 - toPlan).toFixed(3));
+    $('plan').setAttribute('opacity', toPlan.toFixed(3));
+    $('bHead').textContent = t < 8.5 ? 'NEXT STEP' : 'UNIT 4 · REVISED PLAN';
+    rowEls.forEach(function(g, i){ g.setAttribute('opacity', prog(t, 8.9 + i*0.55, 9.15 + i*0.55).toFixed(3)); });
+    ticks.forEach(function(p, i){ p.setAttribute('opacity', t >= 9.3 + i*0.55 ? 1 : 0); });
+
+    // C: the pacing guide, the principal's note, the unit gets room
+    var grow = ease(prog(t, 12.9, 13.5));
+    $('unitBar').setAttribute('width', (lerp(470, 590, grow)).toFixed(1));
+    $('unitLabel').textContent = t < 12.9 ? 'UNIT 4' : 'UNIT 4 · +1 WEEK FOR CONFERENCES';
+    $('lock').setAttribute('transform', 'translate(' + (120 * grow).toFixed(1) + ',0)');
+    $('shackle').setAttribute('d', t >= 12.7 ? 'M1505 388 L1505 370 Q1505 354 1517 354 Q1529 354 1529 370 L1529 376' : 'M1505 388 L1505 376 Q1505 360 1517 360 Q1529 360 1529 376 L1529 388');
+    $('lock').setAttribute('opacity', (1 - prog(t, 13.4, 13.7)).toFixed(3));
+    $('paceNote').textContent = t < 12.9 ? 'UNIT 4 ENDS FRIDAY' : 'ROOM IN THE SCHEDULE TO SLOW DOWN';
+    $('paceNote').setAttribute('fill', t < 12.9 ? '#91462f' : '#2f6970');
+    $('toast').setAttribute('opacity', prog(t, 11.6, 11.9).toFixed(3));
+    var ch = Math.floor(prog(t, 11.9, 12.8) * (toast1.length + toast2.length));
+    $('toast1').textContent = toast1.slice(0, Math.min(ch, toast1.length));
+    $('toast2').textContent = ch > toast1.length ? toast2.slice(0, ch - toast1.length) : '';
+
+    // end card
+    $('endLine').setAttribute('opacity', prog(t, 15.2, 15.6).toFixed(3));
+    $('endRule').setAttribute('width', (96 * ease(prog(t, 15.5, 16.0))).toFixed(1));
+    $('fade').setAttribute('opacity', Math.max(1 - t/0.4, prog(t, 17.6, 18)).toFixed(3));
+  };
+  render(location.hash ? parseFloat(location.hash.slice(1)) : 9.5);
+})();
+</script>
+</body>
+</html>

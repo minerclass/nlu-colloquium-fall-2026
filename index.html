@@ -1,0 +1,1091 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17232d">
+  <meta name="description" content="Micah J. Miner's 15-minute presentation for the NLU Teaching and Learning Fall 2026 Doctoral Colloquium: pedagogical friction, generative AI, and tertiary algorithmicity. Research in progress.">
+  <title>Pedagogical Friction | Fall 2026 Doctoral Colloquium</title>
+  <style>
+    :root {
+      --ink: #17232d;
+      --ink-soft: #34434e;
+      --muted: #5a6670;
+      --paper: #f3efe6;
+      --paper-deep: #e8e0d2;
+      --white: #fffdf8;
+      --cream: #f8f4ec;
+      --rust: #91462f;
+      --rust-dark: #6f3324;
+      --rust-light: #d27a5c;
+      --peach: #f0b48f;
+      --teal: #2f6970;
+      --teal-dark: #1f5057;
+      --teal-pale: #dbe7e5;
+      --gold: #b58127;
+      --gold-light: #f5c86a;
+      --line: rgba(23, 35, 45, .18);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Inter, Aptos, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    html { color-scheme: light; }
+    body { margin: 0; overflow: hidden; color: var(--ink); background: #111b23; font-family: var(--sans); }
+    button { font: inherit; color: inherit; }
+    button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 3px; }
+
+    /* Shell */
+    .shell { height: 100vh; display: grid; grid-template-rows: 56px minmax(0, 1fr) 56px; background: radial-gradient(circle at 50% -20%, rgba(74, 112, 126, .32), transparent 42%), #111b23; }
+    .bar, .dock { display: flex; align-items: center; gap: 16px; padding: 0 20px; color: rgba(255, 253, 248, .86); background: rgba(17, 27, 35, .94); font-size: 14px; }
+    .bar { border-bottom: 1px solid rgba(255, 255, 255, .08); }
+    .dock { border-top: 1px solid rgba(255, 255, 255, .08); }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid rgba(255, 253, 248, .4); font-weight: 800; font-size: 12px; letter-spacing: .06em; flex: none; }
+    .brand strong { display: block; color: var(--white); font-size: 14px; }
+    .brand small { display: block; color: rgba(255, 253, 248, .58); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .spacer { flex: 1; }
+    .status { display: flex; align-items: center; gap: 14px; white-space: nowrap; }
+    .status p { margin: 0; }
+    .chip, .tool { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 12px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .14); border-radius: 999px; cursor: pointer; }
+    .tool[aria-pressed="true"] { background: rgba(245, 200, 106, .18); border-color: rgba(245, 200, 106, .5); }
+    .chip.warn { color: var(--gold-light); border-color: rgba(245, 200, 106, .6); }
+    .chip.over { color: #ffd2c4; background: rgba(145, 70, 47, .55); border-color: var(--rust-light); }
+    .tools { display: flex; gap: 8px; }
+    .progress { flex: 1; height: 4px; background: rgba(255, 255, 255, .12); border-radius: 2px; overflow: hidden; }
+    .progress span { display: block; height: 100%; width: 0; background: var(--gold-light); transition: width .25s ease; }
+    .nav-btn { min-width: 44px; justify-content: center; }
+    .stepdots { display: flex; gap: 5px; min-width: 60px; }
+    .stepdots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, .22); }
+    .stepdots i.on { background: var(--gold-light); }
+
+    /* Stage and slides */
+    .stage { min-height: 0; display: grid; place-items: center; padding: 16px 24px; }
+    .deck { position: relative; width: min(calc(100vw - 48px), calc((100vh - 144px) * 16 / 9)); max-width: 1920px; aspect-ratio: 16 / 9; }
+    .slide { container-type: inline-size; position: absolute; inset: 0; display: none; overflow: hidden; padding: 4.6cqw 6cqw 5.4cqw; background: var(--paper); box-shadow: 0 22px 70px rgba(18, 28, 36, .32); }
+    .slide.active { display: flex; flex-direction: column; animation: slide-in .3s ease both; }
+    @keyframes slide-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .slide.dark { background: var(--ink); color: var(--white); }
+    .slide.deep { background: var(--paper-deep); }
+
+    /* Step builds */
+    .slide [data-step] { opacity: 0; transform: translateY(.6cqw); transition: opacity .45s ease, transform .45s ease; pointer-events: none; }
+    .slide [data-step].shown { opacity: 1; transform: none; pointer-events: auto; }
+    @media (prefers-reduced-motion: reduce) { .slide.active { animation: none; } .slide [data-step] { transition: none; } }
+
+    .slide h1, .slide h2, .slide h3, .slide p, .slide blockquote, .slide ul, .slide ol { margin: 0; }
+    .eyebrow { font-size: 1.05cqw; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--rust); margin-bottom: 1.2cqw; }
+    .dark .eyebrow { color: var(--peach); }
+    .slide h1 { font-family: var(--serif); font-weight: 400; font-size: 4.7cqw; line-height: 1.02; letter-spacing: -.02em; }
+    .slide h2 { font-family: var(--serif); font-weight: 400; font-size: 3.05cqw; line-height: 1.08; letter-spacing: -.015em; max-width: 30em; }
+    .slide h3 { font-family: var(--sans); font-weight: 700; font-size: 1.55cqw; line-height: 1.25; }
+    .t-lead { display: block; }
+    .t-quiet { display: block; font-size: .56em; line-height: 1.15; color: var(--ink-soft); margin-top: .35em; letter-spacing: -.01em; }
+    .dark .t-quiet { color: rgba(255, 253, 248, .76); }
+    .lead { font-size: 1.75cqw; line-height: 1.4; color: var(--ink-soft); }
+    .body { font-size: 1.45cqw; line-height: 1.45; color: var(--ink-soft); }
+    .dark .lead, .dark .body { color: rgba(255, 253, 248, .82); }
+    .small { font-size: 1.12cqw; line-height: 1.4; color: var(--ink-soft); }
+    .source { position: absolute; left: 6cqw; right: 12cqw; bottom: 2.2cqw; font-size: 1.05cqw; color: var(--muted); }
+    .dark .source { color: rgba(255, 253, 248, .6); }
+    .pageno { position: absolute; right: 6cqw; bottom: 2.2cqw; font-size: 1.05cqw; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .dark .pageno { color: rgba(255, 253, 248, .6); }
+    .hint { position: absolute; right: 6cqw; top: 2.2cqw; font-size: 1cqw; color: var(--muted); letter-spacing: .04em; }
+    .dark .hint { color: rgba(255, 253, 248, .55); }
+    .grow { flex: 1; min-height: 0; }
+    .quote { font-family: var(--serif); font-size: 2.05cqw; line-height: 1.32; border-left: .45cqw solid var(--rust); padding-left: 2cqw; color: var(--ink); }
+    .dark .quote { color: var(--white); border-left-color: var(--rust-light); }
+    .quote.sm { font-size: 1.7cqw; }
+    .notes { display: none; }
+    .row { display: flex; gap: 2cqw; }
+    .card { flex: 1; display: flex; flex-direction: column; gap: .8cqw; padding: 1.8cqw 1.9cqw; background: var(--white); border: 1px solid var(--line); border-radius: .9cqw; }
+    .tag { font-size: 1cqw; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+    .card p { font-size: 1.4cqw; line-height: 1.42; color: var(--ink-soft); }
+    .pill { display: inline-block; padding: .45cqw 1.1cqw; border-radius: 999px; font-size: 1.2cqw; font-weight: 600; background: var(--white); border: 1px solid var(--line); }
+
+    /* Interactive controls inside slides */
+    .pick { cursor: pointer; text-align: left; transition: border-color .2s ease, box-shadow .2s ease, background .2s ease, transform .2s ease; }
+    .pick:hover { box-shadow: 0 .4cqw 1.4cqw rgba(23, 35, 45, .12); }
+    .pick[aria-pressed="true"] { border-color: var(--rust); box-shadow: 0 0 0 .18cqw var(--rust); }
+    .dark .pick[aria-pressed="true"] { border-color: var(--peach); box-shadow: 0 0 0 .18cqw var(--peach); }
+    .slide .panel { display: none; }
+    .slide .panel.open { display: block; animation: slide-in .25s ease both; }
+    .slide .panel.open.evidence, .slide .panel.open.fw-detail { display: grid; }
+    .slide .panel.open.fw-detail.empty { display: flex; }
+    .tap { display: inline-flex; align-items: center; gap: .5cqw; font-size: .95cqw; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .tap::before { content: ""; width: .7cqw; height: .7cqw; border-radius: 50%; border: .15cqw solid currentColor; }
+
+    /* 1 and 13: title */
+    .title-wrap { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 2.2cqw; max-width: 62cqw; position: relative; z-index: 2; }
+    .title-meta { display: flex; flex-direction: column; gap: .4cqw; font-size: 1.45cqw; color: rgba(255, 253, 248, .86); }
+    .title-meta strong { color: var(--white); font-size: 1.75cqw; }
+    .aperture-svg { position: absolute; right: -6cqw; top: 50%; width: 50cqw; height: 50cqw; transform: translateY(-50%); z-index: 1; }
+    .aperture-svg .ring { fill: none; stroke: rgba(240, 180, 143, .5); stroke-width: 1.2; }
+    .aperture-svg .ring.faint { stroke: rgba(255, 253, 248, .12); }
+    .aperture-svg .orbit { transform-origin: 300px 300px; animation: spin 90s linear infinite; }
+    .aperture-svg .orbit.rev { animation-duration: 140s; animation-direction: reverse; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .aperture-svg .orbit { animation: none; } }
+
+    /* 2: trace visual */
+    .trace-wrap { display: grid; grid-template-columns: 1.35fr 1fr; gap: 3cqw; align-items: center; }
+    .trace-svg { width: 100%; height: auto; display: block; }
+    .trace-svg .lbl { font-family: var(--sans); font-size: 22px; fill: var(--ink-soft); }
+    .trace-svg .lbl.big { font-family: var(--serif); font-size: 30px; fill: var(--ink); }
+    .trace-svg .ghost { transition: opacity .6s ease; }
+    .trace-side { display: flex; flex-direction: column; gap: 1.4cqw; }
+    .trace-side .card h3 { font-size: 1.5cqw; }
+
+    /* 3: constellation */
+    .constellation { position: relative; display: grid; grid-template-columns: 1fr 1.1fr 1fr; grid-template-rows: auto auto; gap: 1.6cqw 2cqw; align-items: center; }
+    .constellation .hub { grid-column: 2; grid-row: 1 / span 2; justify-self: center; width: 19cqw; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; text-align: center; padding: 2cqw; background: var(--ink); color: var(--white); font-family: var(--serif); font-size: 1.9cqw; line-height: 1.2; box-shadow: 0 0 0 1.2cqw rgba(23, 35, 45, .06), 0 0 0 2.4cqw rgba(23, 35, 45, .04); }
+    .role { padding: 1.4cqw 1.6cqw; background: var(--white); border: 1px solid var(--line); border-radius: .9cqw; display: flex; flex-direction: column; gap: .5cqw; }
+    .role .who { font-family: var(--serif); font-size: 1.85cqw; line-height: 1.15; }
+    .role .what { font-size: 1.22cqw; line-height: 1.38; color: var(--ink-soft); }
+    .role.student { border-style: dashed; }
+
+    /* 4: RQ explorer */
+    .rq-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6cqw; }
+    .rq { padding: 1.6cqw 1.7cqw; background: var(--white); border: 1px solid var(--line); border-radius: .9cqw; display: flex; flex-direction: column; gap: .7cqw; }
+    .rq-num { font-family: var(--serif); font-size: 3cqw; line-height: 1; color: var(--rust); }
+    .rq .rq-text { display: block; font-family: var(--serif); font-size: 1.45cqw; line-height: 1.34; color: var(--ink); }
+    .rq-key { font-size: 1.05cqw; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); }
+    .evidence { margin-top: 1.4cqw; padding: 1.4cqw 1.8cqw; border-radius: .9cqw; background: var(--ink); color: var(--white); display: grid; grid-template-columns: 1fr 1fr; gap: .6cqw 3cqw; }
+    .evidence h3 { grid-column: 1 / -1; font-family: var(--serif); font-weight: 400; font-size: 1.7cqw; color: var(--white); }
+    .evidence p { font-size: 1.22cqw; line-height: 1.4; color: rgba(255, 253, 248, .84); }
+    .evidence b { color: var(--peach); font-weight: 700; }
+
+    /* 5: friction and equity */
+    .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6cqw; }
+    .duo .card { border-top: .5cqw solid var(--teal); }
+    .duo .card.ex { border-top-color: var(--rust); }
+    .term { font-family: var(--serif); font-size: 2.1cqw; color: var(--ink); line-height: 1.15; }
+    .spectrum { margin-top: 1.4cqw; display: grid; grid-template-columns: auto 1fr; gap: 1.2cqw 1.6cqw; align-items: center; }
+    .spectrum .cases { display: flex; flex-direction: column; gap: .8cqw; }
+    .case { padding: .9cqw 1.3cqw; border-radius: .7cqw; border: 1px solid var(--line); background: var(--white); font-size: 1.2cqw; font-weight: 600; width: 22cqw; }
+    .case-panel { padding: 1.3cqw 1.6cqw; border-radius: .9cqw; background: var(--ink); color: var(--white); min-height: 9.5cqw; }
+    .case-panel p { font-size: 1.28cqw; line-height: 1.42; color: rgba(255, 253, 248, .86); }
+    .case-panel .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4cqw; margin-top: .8cqw; }
+    .case-panel .split div { border-top: .3cqw solid var(--teal-pale); padding-top: .6cqw; }
+    .case-panel .split div.ex { border-top-color: var(--rust-light); }
+    .case-panel .split b { display: block; font-size: 1cqw; letter-spacing: .1em; text-transform: uppercase; color: var(--peach); margin-bottom: .3cqw; }
+
+    /* 6: framework */
+    .forms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4cqw; }
+    .form-card { padding: 1.4cqw 1.6cqw; background: var(--white); border: 1px solid var(--line); border-top: .5cqw solid var(--teal); border-radius: .9cqw; display: flex; flex-direction: column; gap: .45cqw; }
+    .form-card .place, .foundation .place { font-size: 1.05cqw; letter-spacing: .1em; text-transform: uppercase; color: var(--teal-dark); font-weight: 700; }
+    .form-card .name, .foundation .name { font-family: var(--serif); font-size: 2.05cqw; line-height: 1.1; }
+    .form-card .keeps { font-size: 1.25cqw; line-height: 1.38; color: var(--ink-soft); }
+    .foundation { margin-top: 1.1cqw; padding: 1.3cqw 1.8cqw; border-radius: .9cqw; background: var(--ink); color: var(--white); border: 1px solid var(--ink); display: flex; gap: 2cqw; align-items: center; }
+    .foundation .place { color: var(--peach); }
+    .foundation .keeps { font-size: 1.25cqw; line-height: 1.38; color: rgba(255, 253, 248, .84); flex: 1; }
+    .foundation .note { font-size: 1.1cqw; color: var(--gold-light); max-width: 22cqw; }
+    .pillars { position: relative; }
+    .pillars::before { content: ""; position: absolute; left: 8%; right: 8%; bottom: -1.1cqw; height: 1.1cqw; background: repeating-linear-gradient(90deg, transparent 0 14.5%, rgba(23, 35, 45, .25) 14.5% 15%); }
+    .fw-detail { margin-top: 1.1cqw; padding: 1.2cqw 1.7cqw; border-radius: .9cqw; background: var(--white); border: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1.4fr; gap: 2.4cqw; min-height: 8.6cqw; }
+    .fw-detail b { display: block; font-size: 1cqw; letter-spacing: .1em; text-transform: uppercase; color: var(--rust); margin-bottom: .4cqw; }
+    .fw-detail p { font-size: 1.22cqw; line-height: 1.42; color: var(--ink-soft); }
+    .fw-detail.empty { grid-template-columns: 1fr; align-items: center; color: var(--muted); }
+
+    /* 7: lineage */
+    .lineage { display: grid; grid-template-columns: 1fr auto 1fr auto 1.15fr; gap: 1.2cqw; align-items: stretch; }
+    .lineage .step { padding: 1.5cqw 1.6cqw; background: var(--white); border: 1px solid var(--line); border-radius: .9cqw; display: flex; flex-direction: column; gap: .6cqw; }
+    .lineage .step.now { background: var(--ink); color: var(--white); border-color: var(--ink); }
+    .lineage .who { font-size: 1cqw; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--teal); }
+    .lineage .now .who { color: var(--peach); }
+    .lineage .what { font-family: var(--serif); font-size: 1.9cqw; line-height: 1.15; }
+    .lineage .step p { font-size: 1.25cqw; line-height: 1.4; color: var(--ink-soft); }
+    .lineage .now p { color: rgba(255, 253, 248, .82); }
+    .lineage .sep { align-self: center; font-family: var(--serif); font-size: 2.4cqw; color: var(--rust); }
+    .media-svg { width: 100%; height: auto; display: block; margin-top: 1.4cqw; }
+    .media-svg text { font-family: var(--sans); font-size: 20px; fill: var(--ink-soft); }
+    .roles-row { display: flex; flex-wrap: wrap; gap: .7cqw; align-items: center; }
+    .roles-row .pill { font-size: 1.12cqw; }
+    .roles-row .pill.first { background: var(--ink); color: var(--white); border-color: var(--ink); }
+    .roles-row .arrow { font-family: var(--serif); color: var(--rust); font-size: 1.6cqw; }
+
+    /* 8: design diagram */
+    .design { position: relative; height: 31cqw; }
+    .design svg.links { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .design .links path { fill: none; stroke: var(--rust); stroke-width: 2.5; vector-effect: non-scaling-stroke; stroke-dasharray: 6 6; }
+    .design .links path.ctx { stroke: var(--muted); stroke-dasharray: 2 6; }
+    .node { position: absolute; padding: 1.2cqw 1.4cqw; border-radius: .9cqw; background: var(--white); border: 1px solid var(--line); display: flex; flex-direction: column; gap: .35cqw; }
+    .node .label { font-family: var(--serif); font-size: 1.9cqw; line-height: 1.1; }
+    .node .ln { display: block; font-size: 1.15cqw; line-height: 1.35; color: var(--ink-soft); }
+    .node.qual { left: 0; top: 0; width: 30%; border-left: .6cqw solid var(--teal); }
+    .node.qual .label { font-size: 2.5cqw; }
+    .node.quan { left: 0; top: 43%; width: 30%; border-left: .6cqw solid var(--gold); }
+    .node.ctx { left: 0; top: 77%; width: 30%; border-style: dashed; background: transparent; }
+    .node.int { left: 39%; top: 22%; width: 26%; background: var(--ink); color: var(--white); border-color: var(--ink); }
+    .node.int .ln { color: rgba(255, 253, 248, .84); }
+    .node.out { left: 74%; top: 28%; width: 26%; border: 1px dashed var(--rust); background: transparent; }
+    .node.out .label { color: var(--rust-dark); }
+    .design-detail { margin-top: 1cqw; padding: 1.1cqw 1.6cqw; border-radius: .9cqw; background: var(--cream); border: 1px solid var(--line); font-size: 1.22cqw; line-height: 1.42; color: var(--ink-soft); min-height: 4.6cqw; }
+    .design-detail b { color: var(--rust); }
+
+    /* 9: unit chart */
+    .units { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3cqw; align-items: start; }
+    .unit-rows { display: flex; flex-direction: column; gap: 1.1cqw; }
+    .unit-row { display: grid; grid-template-columns: 17cqw 1fr; gap: 1.2cqw; align-items: center; }
+    .unit-row .who { font-size: 1.3cqw; line-height: 1.25; }
+    .unit-row .who small { display: block; font-size: 1.02cqw; color: var(--muted); }
+    .dots { display: flex; flex-wrap: wrap; gap: .5cqw; }
+    .dot { width: 1.9cqw; height: 1.9cqw; border-radius: 50%; background: var(--teal); }
+    .dot.r { background: var(--rust); }
+    .dot.h { background: transparent; border: .2cqw solid var(--gold); }
+    .dot.g { background: var(--gold); }
+    .survey-grid { display: grid; grid-template-columns: repeat(25, 1fr); gap: .3cqw; }
+    .survey-grid i { aspect-ratio: 1; border-radius: 50%; background: var(--gold); }
+    .survey-grid i.cap { background: transparent; border: .12cqw solid var(--gold); }
+    .legend { display: flex; flex-wrap: wrap; gap: 1.4cqw; margin-top: .9cqw; font-size: 1.05cqw; color: var(--muted); align-items: center; }
+    .legend span { display: inline-flex; align-items: center; gap: .5cqw; }
+    .legend i { width: 1.1cqw; height: 1.1cqw; border-radius: 50%; display: inline-block; }
+    .protect { display: flex; flex-wrap: wrap; gap: .8cqw; }
+    .protect .pill { font-size: 1.1cqw; }
+
+    /* 10: timeline */
+    .tl { position: relative; height: 24cqw; margin-top: 1cqw; }
+    .tl .axis { position: absolute; left: 0; right: 0; top: 11cqw; height: .3cqw; background: var(--ink-soft); opacity: .5; }
+    .tl .month { position: absolute; top: 12cqw; font-size: 1.02cqw; color: var(--muted); transform: translateX(-50%); letter-spacing: .06em; text-transform: uppercase; }
+    .tl .tick { position: absolute; top: 10.6cqw; width: 1px; height: 1.1cqw; background: var(--ink-soft); opacity: .5; }
+    .tl .band { position: absolute; height: 1.5cqw; border-radius: 999px; font-size: .95cqw; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--white); padding: 0 .9cqw; display: flex; align-items: center; white-space: nowrap; overflow: hidden; }
+    .tl .band.interviews { top: 14.6cqw; background: var(--teal); }
+    .tl .band.survey { top: 16.6cqw; background: repeating-linear-gradient(135deg, var(--gold) 0 .6cqw, #c99a45 .6cqw 1.2cqw); color: var(--ink); }
+    .tl .band.analysis { top: 18.6cqw; background: transparent; border: .15cqw dashed var(--ink-soft); color: var(--ink-soft); }
+    .tl .ev { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; text-align: center; width: 12.5cqw; gap: .3cqw; }
+    .tl .ev .when { font-size: 1.02cqw; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--teal-dark); }
+    .tl .ev .what { font-family: var(--serif); font-size: 1.4cqw; line-height: 1.18; }
+    .tl .ev .stem { width: .18cqw; flex: 1; background: var(--ink-soft); opacity: .35; min-height: 1cqw; }
+    .tl .ev .pin { width: 1.5cqw; height: 1.5cqw; border-radius: 50%; background: var(--teal); border: .3cqw solid var(--paper-deep); }
+    .tl .ev { height: 11.75cqw; }
+    .tl .ev.low { top: 4.9cqw; height: 6.85cqw; }
+    .tl .ev.today .when { color: var(--rust); }
+    .tl .ev.today .pin { background: var(--rust); box-shadow: 0 0 0 .5cqw rgba(145, 70, 47, .25); animation: pulse 2.4s ease-in-out infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 1cqw rgba(145, 70, 47, .08); } }
+    @media (prefers-reduced-motion: reduce) { .tl .ev.today .pin { animation: none; } }
+
+    /* 11: contributions */
+    .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6cqw; }
+    .three .card { border-top: .5cqw solid var(--gold); }
+    .three .card .term { font-size: 2.2cqw; }
+    .three .card blockquote { font-family: var(--serif); font-size: 1.55cqw; line-height: 1.35; color: var(--ink); }
+    .three svg { width: 4.4cqw; height: 4.4cqw; }
+
+    /* 12: reflections */
+    .reflect { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6cqw; }
+    .reflect .card { background: rgba(255, 253, 248, .07); border-color: rgba(255, 253, 248, .18); }
+    .reflect .card h3 { color: var(--white); font-family: var(--serif); font-weight: 400; font-size: 2cqw; }
+    .reflect .card p { color: rgba(255, 253, 248, .82); }
+    .reflect .num { font-family: var(--serif); font-size: 3cqw; color: var(--peach); line-height: 1; }
+    .next-steps { display: flex; gap: 1cqw; align-items: center; flex-wrap: wrap; }
+    .next-steps .pill { background: rgba(255, 253, 248, .08); border-color: rgba(255, 253, 248, .25); color: var(--white); }
+    .next-steps .sep { color: var(--peach); font-size: 1.6cqw; }
+
+    /* Video buttons and player */
+    .video-row { display: flex; flex-wrap: wrap; gap: 1cqw; }
+    .play { display: inline-flex; align-items: center; gap: .9cqw; padding: .75cqw 1.4cqw; border-radius: 999px; background: rgba(255, 253, 248, .08); border: 1px solid rgba(255, 253, 248, .3); color: var(--white); font-size: 1.15cqw; font-weight: 600; cursor: pointer; }
+    .play::before { content: ""; border-left: .95cqw solid var(--peach); border-top: .58cqw solid transparent; border-bottom: .58cqw solid transparent; }
+    .play span { color: rgba(255, 253, 248, .62); font-weight: 400; }
+    .play:hover { background: rgba(255, 253, 248, .16); }
+    .play.light { background: var(--white); border-color: var(--line); color: var(--ink); }
+    .play.light::before { border-left-color: var(--rust); }
+    .play.light span { color: var(--muted); }
+    .player { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: rgba(10, 16, 21, .96); }
+    .player[hidden] { display: none; }
+    .player-inner { display: flex; flex-direction: column; gap: 14px; width: min(92vw, calc((100vh - 150px) * 16 / 9)); }
+    .player video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 8px; }
+    .player-bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; color: rgba(255, 253, 248, .86); font-size: 15px; }
+    .player-bar p { margin: 0; flex: 1; min-width: 200px; }
+    .player-bar strong { color: var(--white); }
+    .player-bar a, .player-bar button { color: var(--white); background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .2); border-radius: 999px; padding: 8px 14px; text-decoration: none; cursor: pointer; font-size: 14px; }
+
+    /* 14: references */
+    .refs { columns: 2; column-gap: 3cqw; }
+    .refs p { font-size: 1.08cqw; line-height: 1.4; padding-left: 2cqw; text-indent: -2cqw; margin: 0 0 .8cqw; break-inside: avoid; color: var(--ink-soft); }
+
+    /* Notes drawer and overview */
+    .drawer { position: fixed; top: 56px; right: 0; bottom: 56px; width: min(440px, 92vw); padding: 20px 22px; overflow: auto; background: var(--cream); color: var(--ink); border-left: 1px solid var(--line); box-shadow: -18px 0 50px rgba(0, 0, 0, .3); transform: translateX(105%); transition: transform .2s ease; z-index: 30; font-size: 17px; line-height: 1.55; }
+    .drawer.open { transform: none; }
+    .drawer h2 { margin: 0 0 4px; font-family: var(--serif); font-weight: 400; font-size: 22px; }
+    .drawer .meta { margin: 0 0 14px; font-size: 13px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+    .drawer p { margin: 0 0 12px; }
+    .drawer .keys { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+    .overview { position: fixed; inset: 56px 0 56px; z-index: 40; overflow: auto; padding: 28px; background: rgba(17, 27, 35, .97); display: none; }
+    .overview.open { display: block; }
+    .overview ol { list-style: none; margin: 0 auto; padding: 0; max-width: 1100px; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+    .overview button { width: 100%; text-align: left; padding: 14px 16px; min-height: 92px; color: var(--white); background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .14); border-radius: 10px; cursor: pointer; }
+    .overview button[aria-current="true"] { border-color: var(--gold-light); background: rgba(245, 200, 106, .12); }
+    .overview .o-num { display: block; font-size: 12px; color: var(--peach); letter-spacing: .1em; text-transform: uppercase; }
+    .overview .o-title { display: block; margin-top: 4px; font-family: var(--serif); font-size: 18px; line-height: 1.25; }
+    .overview .o-time { display: block; margin-top: 6px; font-size: 12px; color: rgba(255, 253, 248, .6); }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    @media (max-width: 760px) {
+      .brand small, .tool .lbl, .status .sec, .stepdots { display: none; }
+      .bar, .dock { padding: 0 10px; gap: 8px; }
+    }
+
+    /* Print: one slide per landscape page, every build step shown */
+    @media print {
+      @page { size: 13.333in 7.5in; margin: 0; }
+      html, body { height: auto; overflow: visible; background: none; }
+      .bar, .dock, .drawer, .overview, .hint, .video-row, .player { display: none !important; }
+      .shell { display: block; height: auto; background: none; }
+      .stage { display: block; padding: 0; }
+      .deck { width: 13.333in; max-width: none; aspect-ratio: auto; }
+      .slide { position: relative; display: flex !important; flex-direction: column; width: 13.333in; height: 7.5in; box-shadow: none; animation: none !important; break-after: page; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .slide [data-step] { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="bar" aria-label="Presentation controls">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">PF</span>
+        <span>
+          <strong>Pedagogical Friction</strong>
+          <small>Fall 2026 Doctoral Colloquium · Nov 7, 2:30 PM · Room 463</small>
+        </span>
+      </div>
+      <div class="spacer"></div>
+      <div class="status">
+        <p class="sec" id="sectionLabel">Opening</p>
+        <p><span id="slideNumber">1</span> / <span id="slideTotal">14</span></p>
+        <button type="button" class="chip" id="timerButton" title="Start or pause the timer (T). Shift+T resets it." aria-label="Start the 15-minute timer">
+          <span aria-hidden="true">◷</span><span id="timerReadout">00:00</span><span class="sr-only"> of 15:00</span>
+        </button>
+      </div>
+      <div class="tools">
+        <button type="button" class="tool" id="notesButton" aria-pressed="false" title="Speaker notes (N)"><span aria-hidden="true">≡</span><span class="lbl">Notes</span></button>
+        <button type="button" class="tool" id="overviewButton" aria-pressed="false" title="Slide overview (O)"><span aria-hidden="true">▦</span><span class="lbl">Overview</span></button>
+        <button type="button" class="tool" id="fullscreenButton" title="Fullscreen (F)"><span aria-hidden="true">⛶</span><span class="lbl">Fullscreen</span></button>
+      </div>
+    </header>
+
+    <main class="stage" id="stage" tabindex="-1">
+      <div class="deck" id="deck" aria-live="polite">
+
+        <!-- 1. Title -->
+        <section class="slide dark active" data-section="Opening" data-time="0:20" aria-label="Title">
+          <svg class="aperture-svg" viewBox="0 0 600 600" aria-hidden="true">
+            <defs>
+              <radialGradient id="glow1" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#d27a5c" stop-opacity=".45"/><stop offset="1" stop-color="#d27a5c" stop-opacity="0"/></radialGradient>
+            </defs>
+            <circle cx="300" cy="300" r="290" class="ring faint"/>
+            <circle cx="300" cy="300" r="230" class="ring faint"/>
+            <g class="orbit"><circle cx="300" cy="300" r="170" class="ring" stroke-dasharray="3 9"/><circle cx="470" cy="300" r="6" fill="#f0b48f"/></g>
+            <g class="orbit rev"><circle cx="300" cy="300" r="110" class="ring"/><circle cx="300" cy="190" r="5" fill="#f5c86a"/><circle cx="210" cy="365" r="4" fill="#dbe7e5"/></g>
+            <circle cx="300" cy="300" r="90" fill="url(#glow1)"/>
+          </svg>
+          <div class="title-wrap">
+            <p class="eyebrow">Fall 2026 Doctoral Colloquium · November 7, 2026</p>
+            <h1><span class="t-lead">Pedagogical Friction</span><span class="t-quiet">in the Age of Generative AI and Tertiary Algorithmicity</span></h1>
+            <p class="lead">A qualitative-dominant convergent mixed methods study</p>
+            <div class="title-meta">
+              <strong>Micah J. Miner</strong>
+              <span>Doctoral Candidate, Ed.D. in Curriculum, Advocacy, and Policy</span>
+              <span>National Louis University · Chair: Dr. Terry Jo Smith</span>
+            </div>
+            <div class="video-row">
+              <button type="button" class="play" data-video="assets/draft-and-defense.mp4" data-title="The draft and the defense" data-desc="18 seconds, no audio. At 11:47 PM a doctoral student asks AI to synthesize research for a literature review, and 4,812 words appear in 41 seconds. Months later, at the defense, a committee member asks which source changed the student’s thinking most, and the student hesitates. Then a ninth-grade classroom where every screen fills at once. End card: The draft is easy now. The defense is not.">Play intro <span>· The draft and the defense, 0:18</span></button>
+              <button type="button" class="play" data-video="assets/twenty-eight-essays.mp4" data-title="Twenty-eight essays" data-desc="18 seconds, no audio. A teacher finds that 26 of 28 essays open the same way. She considers an AI detector, then redesigns the task: drafting in class, a three-minute conference to defend one claim, and a process memo. The next morning the principal gives the unit an extra week. End card: Detection asks who wrote it. Design asks who learned.">Play scene <span>· Twenty-eight essays, 0:18</span></button>
+            </div>
+          </div>
+          <p class="source">Approved as exempt by the NLU IRB, protocol ER01884. This is research in progress. No findings are reported.</p>
+          <aside class="notes">
+            <p>Optional opener: click Play intro before you speak. It runs 18 seconds with no audio, so you can talk over the end card or let it play. Esc returns to the deck. Count it inside your 15 minutes.</p>
+            <p>About 20 seconds. Good afternoon. I’m Micah Miner, a doctoral candidate in Curriculum, Advocacy, and Policy. My chair is Dr. Terry Jo Smith.</p>
+            <p>In the next fifteen minutes I’ll cover the problem, my research questions, the framework and design, where the study stands, and what I’ve learned so far.</p>
+            <p>[Optional: one sentence on your practitioner background. The consent forms describe your district role as separate from this study, so keep it brief and don’t name the district as a study site.]</p>
+          </aside>
+        </section>
+
+        <!-- 2. Problem -->
+        <section class="slide" data-section="Topic and purpose" data-time="1:20" aria-label="The problem">
+          <p class="eyebrow">Research topic · The problem</p>
+          <h2>Generative AI can produce the outputs of learning without the learning</h2>
+          <div class="grow"></div>
+          <div class="trace-wrap">
+            <svg class="trace-svg" viewBox="0 0 900 360" role="img" aria-label="Diagram. A learning process runs from question to draft, feedback, revision, and defense, ending in a finished product. With generative AI, the product can appear while the process steps fade.">
+              <defs>
+                <linearGradient id="fade" x1="0" x2="1"><stop offset="0" stop-color="#2f6970" stop-opacity=".9"/><stop offset="1" stop-color="#2f6970" stop-opacity=".15"/></linearGradient>
+              </defs>
+              <path d="M40 250 C 150 120, 240 300, 340 190 S 540 110, 610 200" fill="none" stroke="url(#fade)" stroke-width="5" stroke-dasharray="2 12" stroke-linecap="round"/>
+              <g class="ghost" id="ghostSteps">
+                <circle cx="40" cy="250" r="16" fill="#2f6970"/><text class="lbl" x="40" y="300" text-anchor="middle">Question</text>
+                <circle cx="185" cy="200" r="14" fill="#2f6970" opacity=".8"/><text class="lbl" x="185" y="160" text-anchor="middle" opacity=".85">Draft</text>
+                <circle cx="340" cy="190" r="12" fill="#2f6970" opacity=".6"/><text class="lbl" x="340" y="240" text-anchor="middle" opacity=".7">Feedback</text>
+                <circle cx="470" cy="145" r="10" fill="#2f6970" opacity=".4"/><text class="lbl" x="470" y="110" text-anchor="middle" opacity=".55">Revision</text>
+                <circle cx="590" cy="190" r="8" fill="#2f6970" opacity=".25"/><text class="lbl" x="575" y="240" text-anchor="middle" opacity=".4">Defense</text>
+              </g>
+              <g transform="translate(660 70)">
+                <rect x="0" y="0" width="200" height="250" rx="12" fill="#fffdf8" stroke="#17232d" stroke-opacity=".25"/>
+                <rect x="24" y="30" width="120" height="14" rx="4" fill="#17232d" opacity=".8"/>
+                <rect x="24" y="62" width="152" height="8" rx="3" fill="#34434e" opacity=".35"/>
+                <rect x="24" y="80" width="140" height="8" rx="3" fill="#34434e" opacity=".35"/>
+                <rect x="24" y="98" width="152" height="8" rx="3" fill="#34434e" opacity=".35"/>
+                <rect x="24" y="116" width="110" height="8" rx="3" fill="#34434e" opacity=".35"/>
+                <rect x="24" y="144" width="152" height="8" rx="3" fill="#34434e" opacity=".35"/>
+                <rect x="24" y="162" width="130" height="8" rx="3" fill="#34434e" opacity=".35"/>
+                <rect x="24" y="180" width="146" height="8" rx="3" fill="#34434e" opacity=".35"/>
+                <circle cx="160" cy="222" r="14" fill="#91462f"/><path d="M153 222 l5 5 l10 -11" stroke="#fffdf8" stroke-width="3" fill="none"/>
+                <text class="lbl big" x="100" y="290" text-anchor="middle">The product</text>
+              </g>
+            </svg>
+            <div class="trace-side">
+              <div class="card" data-step="1">
+                <p class="tag">What can now be generated</p>
+                <h3>Fluent text, code, images, and analyses</h3>
+                <p>Outputs that may be difficult to distinguish from human-authored work</p>
+              </div>
+              <div class="card" data-step="2">
+                <p class="tag">What learning involves</p>
+                <h3>Effort, dialogue, authorship, judgment, and participation</h3>
+                <p>The process the product no longer shows</p>
+              </div>
+            </div>
+          </div>
+          <div class="grow"></div>
+          <blockquote class="quote sm" data-step="3">“The problem is that schools lack a sufficiently precise empirical and conceptual language for judging which forms of ease support access by removing exclusionary friction and which forms of ease bypass learning by removing productive friction.”</blockquote>
+          <p class="source">Dissertation proposal, Chapter One (defended August 13, 2026)</p>
+          <aside class="notes">
+            <p>About 1:20. Three clicks: generated outputs, the learning process, then the problem statement.</p>
+            <p>Generative AI changes the symbolic environment in which students think, write, and communicate. A student can now turn in a fluent essay or a correct analysis without the cognitive, rhetorical, or experiential work that product used to require. The trail on the left is the process. The product on the right can now appear without it.</p>
+            <p>Kapur calls a related pattern “unproductive success”: performance that looks like learning without the learning.</p>
+            <p>Most school AI policy addresses integrity, privacy, and risk. What’s missing is a precise way to tell when ease helps a student in, by removing a barrier, and when ease lets a student skip the learning.</p>
+          </aside>
+        </section>
+
+        <!-- 3. Purpose -->
+        <section class="slide" data-section="Topic and purpose" data-time="0:50" aria-label="Purpose">
+          <p class="eyebrow">Purpose</p>
+          <h2>Four vantage points on the same change</h2>
+          <p class="hint"><span class="tap">Click a group</span></p>
+          <div class="grow"></div>
+          <div class="constellation">
+            <button type="button" class="role pick" data-group="roles" data-show="role-cfe" style="grid-column: 1; grid-row: 1;"><span class="who">Classroom-facing educators</span><span class="what">Teaching, learning, and assessment in the classroom</span></button>
+            <button type="button" class="role pick" data-group="roles" data-show="role-bla" style="grid-column: 3; grid-row: 1;"><span class="who">Building-level administrators</span><span class="what">School-level guidance and professional learning</span></button>
+            <div class="hub">Generative AI and the conditions of learning</div>
+            <button type="button" class="role pick" data-group="roles" data-show="role-dsl" style="grid-column: 1; grid-row: 2;"><span class="who">District or system-level leaders</span><span class="what">Policy, governance, and institutional decision making</span></button>
+            <button type="button" class="role pick student" data-group="roles" data-show="role-aus" style="grid-column: 3; grid-row: 2;"><span class="who">Adult university students</span><span class="what">Looking back on their own learning</span></button>
+          </div>
+          <div class="grow"></div>
+          <div class="panel open" data-panel="roles" id="role-default">
+            <blockquote class="quote sm">“The purpose of this qualitative-dominant convergent mixed methods study is to investigate how classroom-facing educators, building-level administrators, and district or system-level leaders understand and navigate the effects of generative AI on teaching, learning, authorship, assessment, and institutional decision making, while adult university students contribute retrospective learner perspectives on cognitive engagement, authorship, and disclosure norms.”</blockquote>
+          </div>
+          <div class="panel" data-panel="roles" id="role-cfe"><p class="lead"><b>Classroom-facing educators</b> describe how AI changes the work students do and how they judge it. They also complete a short scenario card sort.</p></div>
+          <div class="panel" data-panel="roles" id="role-bla"><p class="lead"><b>Building-level administrators</b> describe the school-level guidance, professional learning, and assessment expectations that shape classroom choices.</p></div>
+          <div class="panel" data-panel="roles" id="role-dsl"><p class="lead"><b>District or system-level leaders</b> describe the policy, governance, and institutional decisions that enable or constrain classroom practice.</p></div>
+          <div class="panel" data-panel="roles" id="role-aus"><p class="lead"><b>Adult university students</b> contribute “retrospective learner perspectives on cognitive engagement, authorship, and disclosure norms.” They also complete the card sort.</p></div>
+          <p class="source">Dissertation proposal, Chapter One</p>
+          <aside class="notes">
+            <p>About 50 seconds. The study isn’t a bounded case. It reads four role-based perspectives side by side.</p>
+            <p>Click a group if someone asks what each one adds. The purpose statement comes back when nothing is selected. Click the same group again to clear it.</p>
+            <p>The point is to see where these accounts agree, where they differ, and what each vantage point can see that the others can’t.</p>
+          </aside>
+        </section>
+
+        <!-- 4. Research questions -->
+        <section class="slide" data-section="Research questions" data-time="1:20" aria-label="Research questions">
+          <p class="eyebrow">Research questions</p>
+          <h2>Three questions move from experience to conditions to supports</h2>
+          <p class="hint"><span class="tap">Click a question to see its evidence</span></p>
+          <div class="grow"></div>
+          <div class="rq-row">
+            <button type="button" class="rq pick" data-group="rqs" data-show="ev-1"><span class="rq-num">RQ1</span><span class="rq-key">Experience</span><span class="rq-text">How do classroom-facing educators, building-level administrators, district or system-level leaders, and adult university students make sense of the ways generative AI changes the effort, dialogue, authorship, judgment, and participation involved in teaching and learning?</span></button>
+            <button type="button" class="rq pick" data-group="rqs" data-show="ev-2"><span class="rq-num">RQ2</span><span class="rq-key">Conditions</span><span class="rq-text">How do educators and school-system leaders make sense of and respond to the policy, professional-learning, assessment, access, and governance conditions surrounding generative AI?</span></button>
+            <button type="button" class="rq pick" data-group="rqs" data-show="ev-3"><span class="rq-num">RQ3</span><span class="rq-key">Supports</span><span class="rq-text">What language, assessment expectations, instructional practices, professional supports, and leadership approaches do educators and school-system leaders identify as important for preserving forms of friction that support learning while reducing unnecessary barriers?</span></button>
+          </div>
+          <div class="panel evidence" data-panel="rqs" id="ev-1">
+            <h3>RQ1 draws on</h3>
+            <p><b>Sources.</b> Interviews across all four groups; the scenario card sort for classroom-facing educators and adult university students; educator survey, institutional documents, and selected national evidence as context.</p>
+            <p><b>Claim boundary.</b> Situated interpretations of how participants understand these changes. No direct measurement of student learning outcomes.</p>
+          </div>
+          <div class="panel evidence" data-panel="rqs" id="ev-2">
+            <h3>RQ2 draws on</h3>
+            <p><b>Sources.</b> Educator and leader interviews; card-sort explanations where relevant; document analysis; the educator survey; selected NCES and RAND evidence.</p>
+            <p><b>Claim boundary.</b> Conditions that enable or constrain friction-preserving pedagogy, not causal effects or representative national estimates.</p>
+          </div>
+          <div class="panel evidence" data-panel="rqs" id="ev-3">
+            <h3>RQ3 draws on</h3>
+            <p><b>Sources.</b> Integrated RQ1 and RQ2 evidence. No additional participant group or instrument.</p>
+            <p><b>Analysis.</b> Cross-role synthesis, joint displays, narrative weaving, and meta-inferences that keep convergence, divergence, expansion, and silence visible.</p>
+          </div>
+          <div class="grow"></div>
+          <aside class="notes">
+            <p>About 1:20. Don’t read these aloud in full. Name the move: experience, conditions, supports.</p>
+            <p>RQ1 is about experience: how people make sense of what AI changes in effort, dialogue, authorship, judgment, and participation. RQ2 moves to conditions: policy, professional learning, assessment, access, and governance. RQ3 asks what supports people say are needed to keep the friction that helps learning while removing barriers that don’t.</p>
+            <p>Clicking a question shows its sources and claim boundary from the methods matrix. Useful in Q&amp;A.</p>
+          </aside>
+        </section>
+
+        <!-- 5. Pedagogical friction and the equity boundary -->
+        <section class="slide" data-section="Framework and methodology" data-time="1:20" aria-label="Pedagogical friction">
+          <p class="eyebrow">Theoretical framework · Pedagogical friction</p>
+          <h2>Some friction is worth keeping, and some is worth removing</h2>
+          <div class="grow" style="flex: .5;"></div>
+          <blockquote class="quote sm">“the intentional preservation of educationally productive resistance necessary for durable learning under conditions where frictionless automation has become increasingly available”</blockquote>
+          <div class="grow" style="flex: .5;"></div>
+          <div class="duo" data-step="1">
+            <div class="card"><p class="tag">Productive friction</p><p class="term">Difficulty that builds capacity</p><p>Supports the intended learning, so it is worth preserving.</p></div>
+            <div class="card ex"><p class="tag" style="color: var(--rust);">Exclusionary friction</p><p class="term">Difficulty that blocks access</p><p>Creates barriers unrelated to the intended learning, so it is worth removing.</p></div>
+          </div>
+          <div class="spectrum" data-step="2">
+            <div class="cases">
+              <button type="button" class="case pick" data-group="cases" data-show="case-ml">A multilingual learner uses AI translation</button>
+              <button type="button" class="case pick" data-group="cases" data-show="case-dis">A student with a disability uses AI as support</button>
+            </div>
+            <div>
+              <div class="panel open case-panel" data-panel="cases" id="case-default"><p><b>The equity boundary.</b> The study asks whose learning a given difficulty supports and whose participation it obstructs (Annamma et al., 2013; Dolmage, 2017). The framework is not a call to ban AI tools or make school harder. Choose an example.</p></div>
+              <div class="panel case-panel" data-panel="cases" id="case-ml">
+                <p>The same tool use can reduce both kinds of friction at once.</p>
+                <div class="split">
+                  <div><b>May remove</b><p>An exclusionary barrier: writing in an additional language</p></div>
+                  <div class="ex"><b>May complicate</b><p>Language choice, voice, reasoning, and authorship</p></div>
+                </div>
+              </div>
+              <div class="panel case-panel" data-panel="cases" id="case-dis">
+                <p>AI may work as accessibility support rather than as a cognitive shortcut.</p>
+                <div class="split">
+                  <div><b>Depends on</b><p>Instructional design, context, and human oversight</p></div>
+                  <div class="ex"><b>The risk</b><p>Recoding legitimate accommodation as bypass</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grow"></div>
+          <p class="source">Definition, terms, and examples: dissertation proposal, Chapter Two</p>
+          <aside class="notes">
+            <p>About 1:20. Two clicks: the two kinds of friction, then the equity examples.</p>
+            <p>In physics, friction is energy lost. I use the term against that meaning: in learning, some resistance is the work through which understanding develops. But productive friction builds capacity, and exclusionary friction blocks access without contributing to learning.</p>
+            <p>Click the multilingual example: the same translation can remove a barrier and complicate voice and authorship. Click the disability example: AI can be accessibility support, depending on design and oversight. Disability studies and DisCrit remind us that what schools call rigor has sometimes worked as gatekeeping. No policy can draw this line mechanically; it takes situated professional judgment.</p>
+          </aside>
+        </section>
+
+        <!-- 6. Framework structure -->
+        <section class="slide deep" data-section="Framework and methodology" data-time="1:40" aria-label="Three learner-facing forms and one institutional condition">
+          <p class="eyebrow">Theoretical framework · Structure</p>
+          <h2>Three learner-facing forms rest on one institutional condition</h2>
+          <p class="hint"><span class="tap">Click a form</span></p>
+          <div class="video-row" style="position: absolute; right: 6cqw; top: 9.6cqw;">
+            <button type="button" class="play light" data-video="assets/twenty-eight-essays.mp4" data-title="Twenty-eight essays" data-desc="18 seconds, no audio. A teacher finds that 26 of 28 essays open the same way. She considers an AI detector, then redesigns the task: drafting in class, a three-minute conference to defend one claim, and a process memo. The next morning the principal gives the unit an extra week. End card: Detection asks who wrote it. Design asks who learned.">Play scene <span>· 0:18</span></button>
+          </div>
+          <div class="grow"></div>
+          <div class="pillars">
+            <div class="forms">
+              <button type="button" class="form-card pick" data-group="forms" data-show="fw-noetic"><span class="place">The Head</span><span class="name">Noetic friction</span><span class="keeps">Preserves necessary cognitive work</span></button>
+              <button type="button" class="form-card pick" data-group="forms" data-show="fw-rhet"><span class="place">The Room</span><span class="name">Rhetorical friction</span><span class="keeps">Preserves dialogue, audience, critique, and revision</span></button>
+              <button type="button" class="form-card pick" data-group="forms" data-show="fw-exist"><span class="place">The World</span><span class="name">Existential friction</span><span class="keeps">Preserves authorship, accountability, and the relationship between a person and a claim</span></button>
+            </div>
+          </div>
+          <button type="button" class="foundation pick" data-group="forms" data-show="fw-infra" data-step="1">
+            <span><span class="place">The System</span><br><span class="name">Infrastructural friction</span></span>
+            <span class="keeps">The policy, leadership, professional-learning, assessment, and access conditions that make those learner-facing forms possible</span>
+            <span class="note">Beneath the other three as their condition, not beside them as a fourth peer</span>
+          </button>
+          <div class="panel open fw-detail empty" data-panel="forms" id="fw-default"><p>Each learner-facing form answers a pressure that AI creates. Choose a form to see the pressure and the practices that preserve it.</p></div>
+          <div class="panel fw-detail" data-panel="forms" id="fw-noetic">
+            <div><b>Pressure: noetic displacement</b><p>When AI substitutes for cognitive work that supports understanding</p></div>
+            <div><b>Preserved through</b><p>Generation before solution, retrieval practice, annotated reading, slow writing, argument mapping, worked-example fading, and structured reflection before any AI use</p></div>
+          </div>
+          <div class="panel fw-detail" data-panel="forms" id="fw-rhet">
+            <div><b>Pressure: rhetorical saturation</b><p>When generated language weakens genuine exchange or obscures the source of a claim</p></div>
+            <div><b>Preserved through</b><p>Socratic seminars, peer review, oral explanation, conferences, debate, critique protocols, and authentic audiences</p></div>
+          </div>
+          <div class="panel fw-detail" data-panel="forms" id="fw-exist">
+            <div><b>Pressure: existential abstraction</b><p>When a polished artifact becomes separated from a learner’s willingness or ability to own and defend it</p></div>
+            <div><b>Preserved through</b><p>Oral defenses, reflective authorship statements, process memos, place-based inquiry, and assignments that connect claims to a student’s own reasoning</p></div>
+          </div>
+          <div class="panel fw-detail" data-panel="forms" id="fw-infra">
+            <div><b>Why it is the condition</b><p>Individual teachers cannot preserve the other three alone if grades, pacing guides, device environments, parent expectations, and district policy reward frictionless completion</p></div>
+            <div><b>Includes</b><p>AI policy, assessment expectations, professional development priorities, privacy governance, approved-tool ecosystems, leadership language, and schedules that permit slowing learning when it is educationally necessary</p></div>
+          </div>
+          <div class="grow"></div>
+          <p class="source">Dissertation proposal, Chapters One and Two</p>
+          <aside class="notes">
+            <p>If time allows, Play scene shows the teacher clip, an 18-second illustration of the infrastructural layer: a teacher redesigns the task, and the system gives her room to slow down.</p>
+            <p>About 1:40. One click brings in the foundation. Then click cards only if time allows. Noetic is a good one to open.</p>
+            <p>Three forms sit in the learner’s own activity: the head, the room, and the world. Each answers a pressure AI creates: displacement of thinking, saturation of language, and abstraction of authorship.</p>
+            <p>The fourth layer is different in kind. Infrastructural friction is the system. One teacher can’t preserve the other three if the system rewards frictionless completion. How those institutional conditions enable or constrain classroom friction is the central relationship the study examines.</p>
+          </aside>
+        </section>
+
+        <!-- 7. Tertiary algorithmicity -->
+        <section class="slide" data-section="Framework and methodology" data-time="0:50" aria-label="Tertiary algorithmicity">
+          <p class="eyebrow">Theoretical framework · Media ecology</p>
+          <h2>Why “tertiary algorithmicity”</h2>
+          <div class="grow"></div>
+          <div class="lineage">
+            <div class="step"><span class="who">Ong (1982/2002)</span><span class="what">Orality, literacy, secondary orality</span><p>Media change how people think and communicate.</p></div>
+            <div class="sep" aria-hidden="true" data-step="1">→</div>
+            <div class="step" data-step="1"><span class="who">Stalder (2016/2018)</span><span class="what">Algorithmicity</span><p>Algorithms select, organize, and give form to cultural material.</p></div>
+            <div class="sep" aria-hidden="true" data-step="2">→</div>
+            <div class="step now" data-step="2"><span class="who">This study</span><span class="what">Tertiary algorithmicity</span><p>Algorithmic systems both curate and generate symbolic content, making human authorship optional at scale.</p></div>
+          </div>
+          <div class="grow"></div>
+          <div data-step="3">
+            <p class="small" style="margin-bottom: .8cqw;">“Humans are not absent, but their role may shift from primary producer to …”</p>
+            <div class="roles-row">
+              <span class="pill first">primary producer</span><span class="arrow" aria-hidden="true">→</span>
+              <span class="pill">prompt initiator</span><span class="pill">consumer</span><span class="pill">evaluator</span><span class="pill">editor</span><span class="pill">validator</span><span class="pill">data source</span><span class="pill">institutional actor</span>
+            </div>
+          </div>
+          <div class="grow"></div>
+          <p class="source">Dissertation proposal, Chapter Two</p>
+          <aside class="notes">
+            <p>About 50 seconds. Three clicks: Stalder, this study, then the shifting roles.</p>
+            <p>This builds on Ong’s media ecology. Stalder uses algorithmicity for systems that sort and shape culture. What is new is that the same systems now also generate the content, fluently and at scale.</p>
+            <p>The concept doesn’t claim computational generation started with chatbots. It names the breadth, fluency, and accessibility of it now. A learner can stay busy in the workflow without doing the generative work through which understanding develops.</p>
+          </aside>
+        </section>
+
+        <!-- 8. Design -->
+        <section class="slide" data-section="Framework and methodology" data-time="1:30" aria-label="Research design">
+          <p class="eyebrow">Methodology · Grounded in constructivist qualitative inquiry</p>
+          <h2>Qualitative-dominant convergent mixed methods (QUAL + quan)</h2>
+          <p class="hint"><span class="tap">Click a part of the design</span></p>
+          <div class="grow" style="flex: .6;"></div>
+          <div class="design">
+            <svg class="links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M30 14 C 35 14, 34 38, 39 38" data-step="1"/>
+              <path d="M30 52 C 35 52, 34 42, 39 42" data-step="1"/>
+              <path class="ctx" d="M30 86 C 36 86, 34 48, 39 48" data-step="1"/>
+              <path d="M65 42 L 74 42" data-step="2"/>
+            </svg>
+            <button type="button" class="node qual pick" data-group="design" data-show="d-qual"><span class="label">QUAL</span><span class="ln">Semi-structured interviews and a scenario card sort</span></button>
+            <button type="button" class="node quan pick" data-group="design" data-show="d-quan"><span class="label">quan</span><span class="ln">Anonymous K–12 educator survey</span></button>
+            <button type="button" class="node ctx pick" data-group="design" data-show="d-ctx"><span class="label" style="font-size: 1.5cqw;">Context</span><span class="ln">Institutional documents; selected NCES and RAND evidence</span></button>
+            <button type="button" class="node int pick" data-group="design" data-show="d-int" data-step="1"><span class="label">Integration</span><span class="ln">Joint displays and narrative weaving</span><span class="ln">Convergence, divergence, expansion, or silence</span></button>
+            <button type="button" class="node out pick" data-group="design" data-show="d-out" data-step="2"><span class="label">Interpretation</span><span class="ln">Accounts that do not fit the framework refine, qualify, or extend it</span></button>
+          </div>
+          <div class="panel open design-detail" data-panel="design" id="d-default">The strands are collected in parallel, analyzed separately, and then brought together. No source validates or overrides another.</div>
+          <div class="panel design-detail" data-panel="design" id="d-qual"><b>Dominant strand.</b> Interpretive codebook thematic analysis: participant-near first-cycle coding, second-cycle themes, temporal coding of adult-student accounts, and attention to discrepant accounts.</div>
+          <div class="panel design-detail" data-panel="design" id="d-quan"><b>Supplemental strand.</b> Descriptive and conditional survey comparisons, run in R and checked in jamovi. No causal claims and no representative national estimates.</div>
+          <div class="panel design-detail" data-panel="design" id="d-ctx"><b>Context.</b> Document analysis and national structural context extend or contextualize participant accounts.</div>
+          <div class="panel design-detail" data-panel="design" id="d-int"><b>Integration.</b> Joint displays and narrative weaving, reading for convergence, divergence, expansion, or silence. Silence counts as a result.</div>
+          <div class="panel design-detail" data-panel="design" id="d-out"><b>Interpretation.</b> Meta-inferences translate experience and institutional conditions into situated implications. Evidence that complicates the framework is kept in view.</div>
+          <div class="grow" style="flex: .4;"></div>
+          <p class="source">Creswell &amp; Plano Clark (2018); Braun &amp; Clarke (2006, 2021); Saldaña (2021). Analysis details: defense methods matrix</p>
+          <aside class="notes">
+            <p>About 1:30. Two clicks: the strands converge on integration, then interpretation.</p>
+            <p>The design is convergent: the strands run in parallel, are analyzed separately, and then come together. The qualitative strand is dominant. The survey is supplemental and descriptive, with no causal claims. Documents and national data give context.</p>
+            <p>Integration uses joint displays and narrative weaving. I read for where the strands converge, diverge, expand each other, or stay silent. Click any box for the analysis behind it.</p>
+          </aside>
+        </section>
+
+        <!-- 9. Participants -->
+        <section class="slide" data-section="Framework and methodology" data-time="1:00" aria-label="Participants and instruments">
+          <p class="eyebrow">Methodology · Participants and instruments, as approved</p>
+          <h2>Who takes part and what they do</h2>
+          <div class="grow"></div>
+          <div class="units">
+            <div>
+              <p class="tag" style="margin-bottom: 1cqw;">Interviews · up to 20</p>
+              <div class="unit-rows">
+                <div class="unit-row"><span class="who">Classroom-facing educators<small>Interview and optional card sort</small></span><span class="dots" data-dots="8" data-kind=""></span></div>
+                <div class="unit-row"><span class="who">Building-level administrators<small>School and system leader interview</small></span><span class="dots" data-dots="4" data-kind=""></span></div>
+                <div class="unit-row"><span class="who">District or system-level leaders<small>School and system leader interview</small></span><span class="dots" data-dots="4" data-kind=""></span></div>
+                <div class="unit-row"><span class="who">Adult university students<small>Retrospective interview and card sort</small></span><span class="dots" data-dots="4" data-kind="r"></span></div>
+              </div>
+              <div class="unit-row" style="margin-top: 1.6cqw;"><span class="who">Survey review volunteers<small>Test the survey; not in the main study</small></span><span class="dots" data-dots="6" data-kind="review"></span></div>
+            </div>
+            <div data-step="1">
+              <p class="tag" style="margin-bottom: 1cqw; color: var(--gold);">Anonymous K–12 educator survey · about 10 to 12 minutes</p>
+              <div class="survey-grid" id="surveyGrid" aria-label="Survey target of about 200 responses, with a maximum of 300"></div>
+              <div class="legend">
+                <span><i style="background: var(--gold);"></i>Target, about 200</span>
+                <span><i style="border: .12cqw solid var(--gold);"></i>Up to 300</span>
+                <span>Each dot is one response</span>
+              </div>
+            </div>
+          </div>
+          <div class="grow"></div>
+          <div class="protect" data-step="2">
+            <span class="pill">Audio-only recording in NLU Microsoft 365</span>
+            <span class="pill">Pseudonyms at transcription</span>
+            <span class="pill">Survey collects no names</span>
+            <span class="pill">Employees of my own district are not eligible</span>
+          </div>
+          <aside class="notes">
+            <p>About one minute. Two clicks: the survey, then the protections. These are approved ceilings, not current counts. Don’t give enrollment numbers or describe anyone who has taken part.</p>
+            <p>Interviews run about 50 to 65 minutes. Classroom-facing educators and the university students also do a short scenario card sort. Building and district leaders share one institutional protocol.</p>
+            <p>The survey review volunteers, between four and six, test wording, routing, and timing before the survey opens, so they can’t take part in the main study.</p>
+          </aside>
+        </section>
+
+        <!-- 10. Status -->
+        <section class="slide deep" data-section="Reflections and next steps" data-time="1:00" aria-label="Where the study stands">
+          <p class="eyebrow">Where I am in the process</p>
+          <h2>From proposal to data collection</h2>
+          <div class="grow"></div>
+          <div class="tl" id="timeline">
+            <div class="axis"></div>
+          </div>
+          <div class="grow"></div>
+          <p class="source">Dates after November 7 are plans. The consents set the study period through February 2027.</p>
+          <aside class="notes">
+            <p>About one minute. The proposal passed in August, the IRB approved the study as exempt on October 7, and invitations opened the next day. Today is the red marker.</p>
+            <p>Right now I’m doing interviews and running review sessions to test the survey before it opens. Interviews continue through February 2027. Then analysis, integration, and Chapters Four and Five.</p>
+            <p>[Check the survey dates before presenting. The survey band shows a plan, not a commitment.]</p>
+          </aside>
+        </section>
+
+        <!-- 11. Contributions -->
+        <section class="slide" data-section="Anticipated contributions" data-time="1:10" aria-label="Anticipated contributions">
+          <p class="eyebrow">Anticipated contributions · No findings yet</p>
+          <h2>What the study may contribute</h2>
+          <div class="grow"></div>
+          <div class="three">
+            <div class="card">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="20" cy="20" r="12" fill="none" stroke="#2f6970" stroke-width="3"/><path d="M29 29 L40 40" stroke="#2f6970" stroke-width="4" stroke-linecap="round"/></svg>
+              <span class="tag">Scholarly</span><span class="term">Testing the concepts</span>
+              <blockquote>“examining whether tertiary algorithmicity and the Pedagogical Friction Framework are useful in empirical practice”</blockquote>
+            </div>
+            <div class="card" data-step="1">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 36 C 14 10, 24 40, 32 18 S 42 14, 44 12" fill="none" stroke="#b58127" stroke-width="3" stroke-dasharray="1 5" stroke-linecap="round"/><rect x="30" y="24" width="14" height="18" rx="2" fill="none" stroke="#17232d" stroke-width="2.5"/></svg>
+              <span class="tag">Practical</span><span class="term">Seeing the process</span>
+              <blockquote>“may help educators distinguish outputs that look like learning from processes that produce learning”</blockquote>
+            </div>
+            <div class="card" data-step="2">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="34" width="36" height="7" rx="2" fill="#17232d"/><rect x="9" y="14" width="7" height="18" rx="2" fill="none" stroke="#91462f" stroke-width="2.5"/><rect x="20.5" y="14" width="7" height="18" rx="2" fill="none" stroke="#91462f" stroke-width="2.5"/><rect x="32" y="14" width="7" height="18" rx="2" fill="none" stroke="#91462f" stroke-width="2.5"/></svg>
+              <span class="tag">Policy</span><span class="term">Designing for learning</span>
+              <blockquote>“shifts attention from academic integrity alone to learning design”</blockquote>
+            </div>
+          </div>
+          <div class="grow"></div>
+          <p class="body" data-step="3">AI governance becomes a curricular and institutional question about the conditions that support human learning.</p>
+          <p class="source">Dissertation proposal, Chapter One</p>
+          <aside class="notes">
+            <p>About 1:10. Three clicks: practical, policy, then the closing line. These are anticipated contributions. I’m not reporting findings.</p>
+            <p>For scholarship, the study tests whether these two concepts actually help people name and respond to what they see. Accounts that don’t fit will refine the framework.</p>
+            <p>For practice, it may help educators tell outputs that look like learning from processes that produce it. For policy, it moves the conversation from catching misconduct to designing for learning. That ties the work back to Curriculum, Advocacy, and Policy.</p>
+          </aside>
+        </section>
+
+        <!-- 12. Reflections -->
+        <section class="slide dark" data-section="Reflections and next steps" data-time="1:30" aria-label="Reflections and next steps">
+          <p class="eyebrow">Reflections and next steps</p>
+          <h2>What the process has taught me so far</h2>
+          <div class="grow"></div>
+          <div class="reflect">
+            <div class="card"><span class="num">1</span><h3>Narrowing the design</h3><p>Before the defense, I removed the case-study frame. The study now reads four role-based perspectives side by side, which fits the questions better.</p></div>
+            <div class="card" data-step="1"><span class="num">2</span><h3>Ethics shapes recruitment</h3><p>Invitations are open calls only. People contact me first, and screening follows the approved scripts word for word.</p></div>
+            <div class="card" data-step="2"><span class="num">3</span><h3>AI in my own process</h3><p>AI tools help me organize and check my work. Coding, interpretation, and claims stay with me, and identifiable data never goes into them.</p></div>
+          </div>
+          <div class="grow"></div>
+          <div class="next-steps" data-step="3">
+            <span class="pill">Finish survey validation</span><span class="sep" aria-hidden="true">→</span>
+            <span class="pill">Open the survey</span><span class="sep" aria-hidden="true">→</span>
+            <span class="pill">Complete interviews by February 2027</span><span class="sep" aria-hidden="true">→</span>
+            <span class="pill">Analysis, integration, Chapters Four and Five</span>
+          </div>
+          <aside class="notes">
+            <p>About 1:30. Three clicks. [Draft. Rewrite these three in your own words, or swap in the lessons you most want other doctoral students to hear.]</p>
+            <p>Possible prompts: What surprised you about the IRB process? What would you tell a student about to write their methods chapter? What changed in your thinking between the qualifying paper and the proposal?</p>
+            <p>Close with the next steps, then thank the audience.</p>
+          </aside>
+        </section>
+
+        <!-- 13. Thank you -->
+        <section class="slide dark" data-section="Questions" data-time="0:20" aria-label="Thank you and questions">
+          <svg class="aperture-svg" viewBox="0 0 600 600" aria-hidden="true">
+            <circle cx="300" cy="300" r="290" class="ring faint"/>
+            <circle cx="300" cy="300" r="230" class="ring faint"/>
+            <g class="orbit"><circle cx="300" cy="300" r="170" class="ring" stroke-dasharray="3 9"/><circle cx="130" cy="300" r="6" fill="#f0b48f"/></g>
+            <g class="orbit rev"><circle cx="300" cy="300" r="110" class="ring"/><circle cx="300" cy="410" r="5" fill="#f5c86a"/></g>
+            <circle cx="300" cy="300" r="90" fill="url(#glow1)"/>
+          </svg>
+          <div class="title-wrap">
+            <p class="eyebrow">Thank you</p>
+            <h1><span class="t-lead">Questions and conversation</span></h1>
+            <p class="lead" style="max-width: 46cqw;">Which friction in your own setting is worth protecting, and which is worth removing?</p>
+            <div class="title-meta">
+              <strong>Micah J. Miner</strong>
+              <span>mminer1@my.nl.edu</span>
+              <span>micahminer.com/dissertation-research</span>
+            </div>
+          </div>
+          <p class="source">NLU IRB protocol ER01884 · Research in progress · References follow</p>
+          <aside class="notes">
+            <p>About 20 seconds, then questions as time allows. Thank Erica and the Student Alumni Advisory Board for hosting.</p>
+            <p>This is a talk, not a recruitment session. Don’t invite people to take part or ask them to pass anything along. If someone asks how to participate, say that study information goes out through approved channels and they’re welcome to email you.</p>
+          </aside>
+        </section>
+
+        <!-- 14. References -->
+        <section class="slide" data-section="References" data-time="0:00" aria-label="References">
+          <p class="eyebrow">References</p>
+          <div class="refs">
+            <p>Annamma, S. A., Connor, D., &amp; Ferri, B. (2013). Dis/ability critical race studies (DisCrit): Theorizing at the intersections of race and dis/ability. <i>Race Ethnicity and Education, 16</i>(1), 1–31. https://doi.org/10.1080/13613324.2012.730511</p>
+            <p>Braun, V., &amp; Clarke, V. (2006). Using thematic analysis in psychology. <i>Qualitative Research in Psychology, 3</i>(2), 77–101. https://doi.org/10.1191/1478088706qp063oa</p>
+            <p>Braun, V., &amp; Clarke, V. (2021). One size fits all? What counts as quality practice in (reflexive) thematic analysis? <i>Qualitative Research in Psychology, 18</i>(3), 328–352. https://doi.org/10.1080/14780887.2020.1769238</p>
+            <p>Creswell, J. W., &amp; Plano Clark, V. L. (2018). <i>Designing and conducting mixed methods research</i> (3rd ed.). SAGE.</p>
+            <p>Dolmage, J. T. (2017). <i>Academic ableism: Disability and higher education</i>. University of Michigan Press.</p>
+            <p>Kapur, M. (2016). Examining productive failure, productive success, unproductive failure, and unproductive success in learning. <i>Educational Psychologist, 51</i>(2), 289–299. https://doi.org/10.1080/00461520.2016.1155457</p>
+            <p>Ong, W. J. (2002). <i>Orality and literacy: The technologizing of the word</i> (2nd ed.). Routledge. (Original work published 1982)</p>
+            <p>Saldaña, J. (2021). <i>The coding manual for qualitative researchers</i> (4th ed.). SAGE.</p>
+            <p>Stalder, F. (2018). <i>The digital condition</i> (V. A. Pakis, Trans.). Polity Press. (Original work published 2016)</p>
+          </div>
+          <p class="source">Entries copied from the defended proposal’s reference list</p>
+          <aside class="notes"><p>Not presented. Leave it in the file for anyone who wants the sources.</p></aside>
+        </section>
+
+      </div>
+    </main>
+
+    <footer class="dock" aria-label="Slide navigation">
+      <button type="button" class="chip nav-btn" id="prevButton" aria-label="Previous">←</button>
+      <div class="stepdots" id="stepDots" aria-hidden="true"></div>
+      <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+      <button type="button" class="chip nav-btn" id="nextButton" aria-label="Next">→</button>
+    </footer>
+  </div>
+
+  <aside class="drawer" id="notesDrawer" aria-label="Speaker notes" aria-hidden="true">
+    <h2 id="notesTitle">Notes</h2>
+    <p class="meta" id="notesMeta"></p>
+    <div id="notesBody"></div>
+    <p class="keys">→ or Space: next build or slide · ←: back · A: show every build on this slide · N notes · O overview · F fullscreen · T timer (Shift+T resets)</p>
+  </aside>
+
+  <div class="player" id="player" role="dialog" aria-modal="true" aria-labelledby="playerTitle" hidden>
+    <div class="player-inner">
+      <video id="playerVideo" controls playsinline preload="metadata"></video>
+      <div class="player-bar">
+        <p id="playerTitle"></p>
+        <a id="playerDownload" href="#" download>Download video</a>
+        <button type="button" id="playerClose">Back to presentation (Esc)</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="overview" id="overview" aria-label="Slide overview" aria-hidden="true">
+    <ol id="overviewList"></ol>
+  </nav>
+
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById(id); };
+      var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+      var current = 0, step = 0;
+      var LIMIT = 15 * 60;
+
+      // Unit chart dots
+      Array.prototype.forEach.call(document.querySelectorAll('[data-dots]'), function (el) {
+        var n = +el.getAttribute('data-dots'), kind = el.getAttribute('data-kind');
+        for (var i = 0; i < n; i++) {
+          var d = document.createElement('i');
+          d.className = 'dot' + (kind === 'r' ? ' r' : '') + (kind === 'review' ? (i < 4 ? ' g' : ' h') : '');
+          el.appendChild(d);
+        }
+        el.setAttribute('role', 'img');
+        el.setAttribute('aria-label', kind === 'review' ? '4 to 6 volunteers' : 'Up to ' + n);
+      });
+      var grid = $('surveyGrid');
+      for (var s = 0; s < 300; s++) { var c = document.createElement('i'); if (s >= 200) c.className = 'cap'; grid.appendChild(c); }
+      grid.setAttribute('role', 'img');
+
+      // Timeline (August 1, 2026 to March 1, 2027)
+      var t0 = Date.UTC(2026, 7, 1), t1 = Date.UTC(2027, 2, 1);
+      function pct(y, m, d) { return ((Date.UTC(y, m - 1, d) - t0) / (t1 - t0) * 100).toFixed(2) + '%'; }
+      var tl = $('timeline');
+      [['Aug', 2026, 8], ['Sep', 2026, 9], ['Oct', 2026, 10], ['Nov', 2026, 11], ['Dec', 2026, 12], ['Jan', 2027, 1], ['Feb', 2027, 2], ['Mar', 2027, 3]].forEach(function (m) {
+        var x = pct(m[1], m[2], 1);
+        var tick = document.createElement('div'); tick.className = 'tick'; tick.style.left = x; tl.appendChild(tick);
+        if (m[0] !== 'Mar') { var lab = document.createElement('div'); lab.className = 'month'; lab.style.left = pct(m[1], m[2], 15); lab.textContent = m[0]; tl.appendChild(lab); }
+      });
+      [
+        { y: 2026, m: 8, d: 13, when: 'Aug 13', what: 'Proposal defense passed' },
+        { y: 2026, m: 9, d: 14, when: 'Sep 14', what: 'IRB review begins', cls: 'low' },
+        { y: 2026, m: 10, d: 7, when: 'Oct 7–8', what: 'Exempt approval; invitations open' },
+        { y: 2026, m: 11, d: 7, when: 'Today, Nov 7', what: 'Interviews and survey review underway', cls: 'today low' },
+        { y: 2027, m: 2, d: 20, when: 'Feb 2027', what: 'Data collection closes' }
+      ].forEach(function (e) {
+        var ev = document.createElement('div');
+        ev.className = 'ev' + (e.cls ? ' ' + e.cls : '');
+        ev.style.left = pct(e.y, e.m, e.d);
+        ev.innerHTML = '<span class="when"></span><span class="what"></span><span class="stem"></span><span class="pin"></span>';
+        ev.querySelector('.when').textContent = e.when;
+        ev.querySelector('.what').textContent = e.what;
+        tl.appendChild(ev);
+      });
+      function band(cls, a, b, label, stepNo) {
+        var el = document.createElement('div');
+        el.className = 'band ' + cls;
+        el.style.left = a; el.style.width = 'calc(' + b + ' - ' + a + ')';
+        el.textContent = label;
+        if (stepNo) el.setAttribute('data-step', stepNo);
+        tl.appendChild(el);
+      }
+      band('interviews', pct(2026, 10, 8), pct(2027, 2, 26), 'Interviews', 0);
+      band('survey', pct(2026, 11, 10), pct(2027, 1, 29), 'Survey, planned', 1);
+      band('analysis', pct(2027, 1, 15), pct(2027, 3, 1), 'Analysis →', 2);
+
+      // Page numbers
+      slides.forEach(function (sl, i) {
+        var n = document.createElement('p'); n.className = 'pageno'; n.setAttribute('aria-hidden', 'true');
+        n.textContent = (i + 1) + ' / ' + slides.length; sl.appendChild(n);
+      });
+      $('slideTotal').textContent = slides.length;
+
+      function maxStep(sl) {
+        var m = 0;
+        Array.prototype.forEach.call(sl.querySelectorAll('[data-step]'), function (e) { m = Math.max(m, +e.getAttribute('data-step')); });
+        return m;
+      }
+      function applySteps(sl, k) {
+        Array.prototype.forEach.call(sl.querySelectorAll('[data-step]'), function (e) {
+          e.classList.toggle('shown', +e.getAttribute('data-step') <= k);
+        });
+        var dots = $('stepDots'); dots.innerHTML = '';
+        for (var i = 1; i <= maxStep(sl); i++) { var d = document.createElement('i'); if (i <= k) d.className = 'on'; dots.appendChild(d); }
+      }
+      function resetPanels(sl) {
+        Array.prototype.forEach.call(sl.querySelectorAll('.pick[aria-pressed]'), function (b) { b.setAttribute('aria-pressed', 'false'); });
+        Array.prototype.forEach.call(sl.querySelectorAll('.panel'), function (p) { p.classList.toggle('open', /-default$/.test(p.id)); });
+      }
+      function titleOf(sl) {
+        var h = sl.querySelector('h1, h2');
+        return (h ? h.textContent : sl.getAttribute('aria-label')).replace(/\s+/g, ' ').trim();
+      }
+
+      function show(i, k) {
+        current = Math.max(0, Math.min(slides.length - 1, i));
+        var sl = slides[current];
+        step = k === 'max' ? maxStep(sl) : (k || 0);
+        slides.forEach(function (x, j) { x.classList.toggle('active', j === current); x.setAttribute('aria-hidden', j === current ? 'false' : 'true'); });
+        applySteps(sl, step);
+        $('slideNumber').textContent = current + 1;
+        $('sectionLabel').textContent = sl.getAttribute('data-section') || '';
+        $('progressBar').style.width = ((current + 1) / slides.length * 100) + '%';
+        var notes = sl.querySelector('.notes');
+        $('notesTitle').textContent = (current + 1) + '. ' + titleOf(sl);
+        var t = sl.getAttribute('data-time');
+        $('notesMeta').textContent = (sl.getAttribute('data-section') || '') + (t && t !== '0:00' ? ' · target ' + t : '') + (maxStep(sl) ? ' · ' + maxStep(sl) + ' builds' : '');
+        $('notesBody').innerHTML = notes ? notes.innerHTML : '<p>No notes for this slide.</p>';
+        Array.prototype.forEach.call($('overviewList').querySelectorAll('button'), function (b, j) { b.setAttribute('aria-current', j === current ? 'true' : 'false'); });
+        history.replaceState(null, '', '#' + (current + 1));
+      }
+      function next() {
+        var sl = slides[current];
+        if (step < maxStep(sl)) { step++; applySteps(sl, step); }
+        else if (current < slides.length - 1) { resetPanels(slides[current + 1]); show(current + 1, 0); }
+      }
+      function prev() {
+        var sl = slides[current];
+        if (step > 0) { step--; applySteps(sl, step); }
+        else if (current > 0) { show(current - 1, 'max'); }
+      }
+
+      // Click-to-reveal panels
+      Array.prototype.forEach.call(document.querySelectorAll('.pick[data-show]'), function (b) {
+        b.setAttribute('aria-pressed', 'false');
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var sl = b.closest('.slide'), group = b.getAttribute('data-group'), target = b.getAttribute('data-show');
+          var wasOn = b.getAttribute('aria-pressed') === 'true';
+          Array.prototype.forEach.call(sl.querySelectorAll('.pick[data-group="' + group + '"]'), function (x) { x.setAttribute('aria-pressed', 'false'); });
+          Array.prototype.forEach.call(sl.querySelectorAll('.panel[data-panel="' + group + '"]'), function (p) {
+            p.classList.toggle('open', wasOn ? /-default$/.test(p.id) : p.id === target);
+          });
+          if (!wasOn) b.setAttribute('aria-pressed', 'true');
+        });
+      });
+
+      // Overview
+      slides.forEach(function (sl, i) {
+        var li = document.createElement('li'), b = document.createElement('button'), t = sl.getAttribute('data-time');
+        b.type = 'button';
+        b.innerHTML = '<span class="o-num">' + (i + 1) + ' · ' + (sl.getAttribute('data-section') || '') + '</span><span class="o-title"></span><span class="o-time">' + (t && t !== '0:00' ? 'Target ' + t : 'Not presented') + '</span>';
+        b.querySelector('.o-title').textContent = titleOf(sl);
+        b.addEventListener('click', function () { resetPanels(sl); show(i, 0); toggleOverview(false); });
+        li.appendChild(b); $('overviewList').appendChild(li);
+      });
+
+      function toggleNotes(force) {
+        var d = $('notesDrawer'), open = typeof force === 'boolean' ? force : !d.classList.contains('open');
+        d.classList.toggle('open', open); d.setAttribute('aria-hidden', open ? 'false' : 'true');
+        $('notesButton').setAttribute('aria-pressed', open ? 'true' : 'false');
+      }
+      function toggleOverview(force) {
+        var o = $('overview'), open = typeof force === 'boolean' ? force : !o.classList.contains('open');
+        o.classList.toggle('open', open); o.setAttribute('aria-hidden', open ? 'false' : 'true');
+        $('overviewButton').setAttribute('aria-pressed', open ? 'true' : 'false');
+        if (open) { var c = $('overviewList').querySelectorAll('button')[current]; if (c) c.focus(); }
+      }
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+        else if (document.exitFullscreen) { document.exitFullscreen(); }
+      }
+
+      // Timer against the 15-minute limit
+      var elapsed = 0, running = false, ticker = null;
+      function fmt(sec) { var m = Math.floor(sec / 60), x = sec % 60; return (m < 10 ? '0' : '') + m + ':' + (x < 10 ? '0' : '') + x; }
+      function paint() { $('timerReadout').textContent = fmt(elapsed); var b = $('timerButton'); b.classList.toggle('warn', elapsed >= 780 && elapsed < LIMIT); b.classList.toggle('over', elapsed >= LIMIT); }
+      function toggleTimer() { running = !running; if (running) ticker = setInterval(function () { elapsed++; paint(); }, 1000); else clearInterval(ticker); $('timerButton').setAttribute('aria-label', running ? 'Pause the timer' : 'Start the 15-minute timer'); }
+      function resetTimer() { running = false; clearInterval(ticker); elapsed = 0; paint(); }
+
+      // Video player
+      var player = $('player'), video = $('playerVideo'), lastFocus = null;
+      function openVideo(b) {
+        lastFocus = b;
+        video.src = b.getAttribute('data-video');
+        video.setAttribute('aria-label', b.getAttribute('data-title') + '. ' + b.getAttribute('data-desc'));
+        $('playerTitle').innerHTML = '<strong></strong> · <span></span>';
+        $('playerTitle').querySelector('strong').textContent = b.getAttribute('data-title');
+        $('playerTitle').querySelector('span').textContent = '18 seconds, no audio. An illustration, not study data.';
+        $('playerDownload').href = b.getAttribute('data-video');
+        player.hidden = false;
+        video.currentTime = 0;
+        var p = video.play(); if (p && p.catch) p.catch(function () {});
+        $('playerClose').focus();
+      }
+      function closeVideo() {
+        video.pause(); player.hidden = true; video.removeAttribute('src'); video.load();
+        if (lastFocus) lastFocus.focus();
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('.play[data-video]'), function (b) {
+        b.addEventListener('click', function (e) { e.stopPropagation(); openVideo(b); });
+      });
+      $('playerClose').addEventListener('click', closeVideo);
+      player.addEventListener('click', function (e) { if (e.target === player) closeVideo(); });
+
+      $('prevButton').addEventListener('click', prev);
+      $('nextButton').addEventListener('click', next);
+      $('notesButton').addEventListener('click', function () { toggleNotes(); });
+      $('overviewButton').addEventListener('click', function () { toggleOverview(); });
+      $('fullscreenButton').addEventListener('click', toggleFullscreen);
+      $('timerButton').addEventListener('click', function (e) { if (e.shiftKey) resetTimer(); else toggleTimer(); });
+      $('deck').addEventListener('click', function (e) {
+        if (e.target.closest('a, button')) return;
+        var r = $('deck').getBoundingClientRect();
+        if (e.clientX - r.left < r.width * 0.25) prev(); else next();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        if (!player.hidden) { if (e.key === 'Escape') closeVideo(); return; }
+        var k = e.key, onButton = e.target.closest && e.target.closest('button');
+        if (k === 'ArrowRight' || k === 'PageDown' || (k === ' ' && !onButton)) { e.preventDefault(); next(); }
+        else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
+        else if (k === 'Home') { show(0, 0); }
+        else if (k === 'End') { show(slides.length - 1, 0); }
+        else if (k === 'a' || k === 'A') { show(current, 'max'); }
+        else if (k === 'n' || k === 'N') { toggleNotes(); }
+        else if (k === 'o' || k === 'O') { toggleOverview(); }
+        else if (k === 'f' || k === 'F') { toggleFullscreen(); }
+        else if (k === 't') { toggleTimer(); }
+        else if (k === 'T') { resetTimer(); }
+        else if (k === 'Escape') { toggleOverview(false); toggleNotes(false); }
+      });
+      window.addEventListener('hashchange', function () { var n = parseInt(location.hash.slice(1), 10); if (n && n - 1 !== current) show(n - 1, 0); });
+
+      var params = new URLSearchParams(location.search);
+      var start = parseInt(location.hash.slice(1), 10);
+      show(start ? start - 1 : 0, params.has('all') ? 'max' : 0);
+      paint();
+    })();
+  </script>
+</body>
+</html>
