@@ -299,7 +299,16 @@
     .player-bar strong { color: var(--white); }
     .player-bar a, .player-bar button { color: var(--white); background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .2); border-radius: 999px; padding: 8px 14px; text-decoration: none; cursor: pointer; font-size: 14px; }
 
-    /* 14: references */
+    /* 14: survey invitation (notice B, verbatim) */
+    .survey { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 29cqw; gap: 4cqw; align-items: center; }
+    .survey h2 { font-size: 2.55cqw; margin-bottom: 1.6cqw; }
+    .survey-notice { font-size: 1.42cqw; line-height: 1.5; }
+    .survey-notice a { color: var(--teal-dark); font-weight: 700; text-decoration: none; word-break: break-all; }
+    .survey-qr { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 1cqw; padding: 1.4cqw; background: #fff; border: 1px solid var(--line); border-radius: .9cqw; }
+    .survey-qr img { display: block; width: 100%; height: auto; }
+    .survey-qr figcaption { font-size: 1.2cqw; font-weight: 700; color: var(--ink); letter-spacing: .01em; }
+
+    /* 15: references */
     .refs { columns: 2; column-gap: 3cqw; }
     .refs p { font-size: 1.08cqw; line-height: 1.4; padding-left: 2cqw; text-indent: -2cqw; margin: 0 0 .8cqw; break-inside: avoid; color: var(--ink-soft); }
 
@@ -746,7 +755,23 @@
           <p class="source">NLU IRB protocol ER01884 · Research in progress · References follow</p>
         </section>
 
-        <!-- 14. References -->
+        <!-- 14. Survey invitation: approved notice B, verbatim, with the approved survey link -->
+        <section class="slide" data-section="Questions" data-time="0:20" aria-label="Survey invitation">
+          <div class="survey">
+            <div>
+              <p class="eyebrow">Survey invitation</p>
+              <h2>Invitation: dissertation study on generative AI and K–12 teaching and learning</h2>
+              <p class="survey-notice">K–12 educators and school system leaders: I am a doctoral candidate at National Louis University studying how generative AI is affecting the effortful parts of learning, and what school and district conditions help educators respond. The survey is anonymous, takes 10 to 12 minutes, and asks about your own practice and your own institution. The survey will not ask for names or email addresses and will not require participants to sign in. The researcher will verify the final Microsoft Forms settings relevant to response anonymity and metadata before activation. You must be 18 or older and currently work in a K–12 school or district. Employees of Beach Park CCSD 3 are not eligible. <a href="https://forms.cloud.microsoft/r/UbTcf4EHKn" target="_blank" rel="noopener">https://forms.cloud.microsoft/r/UbTcf4EHKn</a> Questions: mminer1@my.nl.edu.</p>
+            </div>
+            <figure class="survey-qr">
+              <img src="assets/er01884-survey-qr.svg" alt="QR code for the survey link, https://forms.cloud.microsoft/r/UbTcf4EHKn">
+              <figcaption>forms.cloud.microsoft/r/UbTcf4EHKn</figcaption>
+            </figure>
+          </div>
+          <p class="source">NLU IRB protocol ER01884 · Approved notice text</p>
+        </section>
+
+        <!-- 15. References -->
         <section class="slide" data-section="References" data-time="0:00" aria-label="References">
           <p class="eyebrow">References</p>
           <div class="refs">

@@ -5,7 +5,8 @@ Learning Fall 2026 Doctoral Colloquium (Saturday, November 7, 2026, 2:30 to 4:00
 to the session moderator by Monday, November 2.
 
 The study is approved as exempt by the NLU IRB (protocol ER01884). The deck reports research in progress and no
-findings. It contains no participant information and no recruitment request.
+findings. It contains no participant information. Slide 14 shows the approved survey notice (B) word for word,
+with the approved survey link and a QR code for it. No other notice appears in the deck.
 
 ## Files
 
@@ -14,6 +15,7 @@ findings. It contains no participant information and no recruitment request.
 | `index.html` | The deck. Open it in Chrome, Edge, or Safari. No build step |
 | `assets/draft-and-defense.mp4` | Intro clip, 18 seconds, no audio: a doctoral student, an AI draft, and a defense question |
 | `assets/twenty-eight-essays.mp4` | Teacher clip, 18 seconds, no audio: a teacher redesigns a task, and the system makes room |
+| `assets/er01884-survey-qr.svg`, `.png` | QR code for `https://forms.cloud.microsoft/r/UbTcf4EHKn`, with a 4-module quiet zone. Decoded and checked against the link on November 5, 2026. The PNG (1189 px) can be dropped into other slide decks |
 | `assets/*.html` | The scene sources for each clip. Open one with `#seconds` (for example `#9.5`) to preview a moment |
 | `tools/render-video.swift` | Renders a scene page frame by frame into an MP4 with WebKit and AVFoundation |
 | `private/` (not in Git) | Speaker notes (`speaker-notes.js`) and a printable notes page (`speaker-notes.html`). Kept local on purpose |
