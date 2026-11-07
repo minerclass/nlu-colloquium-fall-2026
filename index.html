@@ -726,8 +726,7 @@
           </div>
           <div class="grow"></div>
           <div class="next-steps" data-step="3">
-            <span class="pill">Finish survey validation</span><span class="sep" aria-hidden="true">→</span>
-            <span class="pill">Open the survey</span><span class="sep" aria-hidden="true">→</span>
+            <span class="pill">Collect survey responses</span><span class="sep" aria-hidden="true">→</span>
             <span class="pill">Complete interviews by February 2027</span><span class="sep" aria-hidden="true">→</span>
             <span class="pill">Analysis, integration, Chapters Four and Five</span>
           </div>
@@ -856,7 +855,7 @@
         { y: 2026, m: 8, d: 13, when: 'Aug 13', what: 'Proposal defense passed' },
         { y: 2026, m: 9, d: 14, when: 'Sep 14', what: 'IRB review begins', cls: 'low' },
         { y: 2026, m: 10, d: 7, when: 'Oct 7–8', what: 'Exempt approval; invitations open' },
-        { y: 2026, m: 11, d: 7, when: 'Today, Nov 7', what: 'Interviews and survey review underway', cls: 'today low' },
+        { y: 2026, m: 11, d: 7, when: 'Today, Nov 7', what: 'Collecting survey responses', cls: 'today low' },
         { y: 2027, m: 2, d: 20, when: 'Feb 2027', what: 'Data collection closes' }
       ].forEach(function (e) {
         var ev = document.createElement('div');
@@ -876,7 +875,7 @@
         tl.appendChild(el);
       }
       band('interviews', pct(2026, 10, 8), pct(2027, 2, 26), 'Interviews', 0);
-      band('survey', pct(2026, 11, 10), pct(2027, 1, 29), 'Survey, planned', 1);
+      band('survey', pct(2026, 11, 5), pct(2027, 1, 29), 'Survey, open since Nov 5', 1);
       band('analysis', pct(2027, 1, 15), pct(2027, 3, 1), 'Analysis →', 2);
 
       // Page numbers
